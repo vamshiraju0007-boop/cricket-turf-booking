@@ -3,27 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
-enum Role {
-  USER
-  OWNER
-}
-
-enum BookingStatus {
-  PENDING
-  CONFIRMED
-  CANCELLED
-}
-
-enum PaymentStatus {
-  CREATED
-  PAID
-  FAILED
-}
 
 model User {
   id           String    @id @default(cuid())
@@ -31,7 +14,7 @@ model User {
   email        String    @unique
   phone        String?
   passwordHash String
-  role         Role      @default(USER)
+  role         String    @default("USER")
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   bookings     Booking[]
@@ -46,7 +29,7 @@ model Booking {
   endTimeUtc   DateTime      // Actual end time in UTC
   slotsCount   Int           // Number of hourly slots booked
   amountPaise  Int           // Total amount in paise (₹1 = 100 paise)
-  status       BookingStatus @default(PENDING)
+  status       String        @default("PENDING")
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   payment      Payment?
@@ -67,7 +50,7 @@ model Payment {
   razorpaySignature  String?
   amountPaise        Int
   currency           String        @default("INR")
-  status             PaymentStatus @default(CREATED)
+  status             String        @default("CREATED")
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 
