@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, MapPin, MoreVertical, RefreshCw, X } from "lucide-react";
+import { Calendar, Clock, MapPin, MoreVertical, RefreshCw, X, Edit } from "lucide-react";
 import { formatDate, formatTime, formatPrice } from "@/lib/booking-utils";
 import {
     DropdownMenu,
@@ -25,6 +25,7 @@ interface EnhancedBookingCardProps {
     };
     onCancel?: (id: string) => void;
     onRebook?: (booking: any) => void;
+    onEdit?: (booking: any) => void;
     showActions?: boolean;
 }
 
@@ -32,6 +33,7 @@ export default function EnhancedBookingCard({
     booking,
     onCancel,
     onRebook,
+    onEdit,
     showActions = true,
 }: EnhancedBookingCardProps) {
     const startTime = new Date(booking.startTimeUtc);
@@ -55,10 +57,10 @@ export default function EnhancedBookingCard({
         <Card className="border-primary/10 bg-white hover:shadow-lg transition-all duration-300 hover:scale-102 overflow-hidden group">
             {/* Colored top border */}
             <div className={`h-1 w-full ${booking.status.toLowerCase() === "confirmed"
-                    ? "bg-gradient-to-r from-green-500 to-green-600"
-                    : booking.status.toLowerCase() === "cancelled"
-                        ? "bg-gradient-to-r from-red-500 to-red-600"
-                        : "bg-gradient-to-r from-yellow-500 to-yellow-600"
+                ? "bg-gradient-to-r from-green-500 to-green-600"
+                : booking.status.toLowerCase() === "cancelled"
+                    ? "bg-gradient-to-r from-red-500 to-red-600"
+                    : "bg-gradient-to-r from-yellow-500 to-yellow-600"
                 }`}></div>
 
             <CardHeader className="pb-3">
@@ -150,6 +152,34 @@ export default function EnhancedBookingCard({
                         {formatPrice(booking.amountPaise)}
                     </span>
                 </div>
+
+                {/* Action Buttons */}
+                {showActions && booking.status.toLowerCase() === "confirmed" && (
+                    <div className="flex gap-2 pt-4 border-t border-gray-100 mt-4">
+                        {onEdit && (
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="flex-1 border-primary/30 hover:bg-primary/5 hover:border-primary"
+                                onClick={() => onEdit(booking)}
+                            >
+                                <Edit className="w-4 h-4 mr-2" />
+                                Change Date
+                            </Button>
+                        )}
+                        {onCancel && (
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="flex-1 border-red-300 text-red-600 hover:bg-red-50 hover:border-red-500"
+                                onClick={() => onCancel(booking.id)}
+                            >
+                                <X className="w-4 h-4 mr-2" />
+                                Cancel
+                            </Button>
+                        )}
+                    </div>
+                )}
             </CardContent>
         </Card>
     );

@@ -96,6 +96,11 @@ export default function DashboardPage() {
         }
     };
 
+    const handleEditBooking = (booking: any) => {
+        // Redirect to venue page with booking details to reschedule
+        router.push(`/venue?edit=${booking.id}&date=${booking.date}`);
+    };
+
     if (status === "loading" || isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -250,6 +255,7 @@ export default function DashboardPage() {
                                         key={booking.id}
                                         booking={booking}
                                         onCancel={handleCancelBooking}
+                                        onEdit={handleEditBooking}
                                         showActions={true}
                                     />
                                 ))}
@@ -270,6 +276,7 @@ export default function DashboardPage() {
                                     <EnhancedBookingCard
                                         key={booking.id}
                                         booking={booking}
+                                        onEdit={handleEditBooking}
                                         showActions={false}
                                     />
                                 ))}
