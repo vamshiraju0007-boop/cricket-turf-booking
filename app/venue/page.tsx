@@ -18,6 +18,8 @@ declare global {
     }
 }
 
+export const dynamic = 'force-dynamic';
+
 export default function VenuePage() {
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -308,10 +310,10 @@ export default function VenuePage() {
                                                     key={index}
                                                     variant={isSelected ? "default" : "outline"}
                                                     className={`relative ${slot.isBooked
-                                                            ? "opacity-50 cursor-not-allowed bg-gray-100"
-                                                            : isSelected
-                                                                ? "gradient-primary text-white border-0 hover:opacity-90 shadow-md"
-                                                                : "hover:scale-105 transition-transform hover:border-primary/50"
+                                                        ? "opacity-50 cursor-not-allowed bg-gray-100"
+                                                        : isSelected
+                                                            ? "gradient-primary text-white border-0 hover:opacity-90 shadow-md"
+                                                            : "hover:scale-105 transition-transform hover:border-primary/50"
                                                         }`}
                                                     disabled={slot.isBooked}
                                                     onClick={() => toggleSlot(slot)}

@@ -16,6 +16,8 @@ import { formatDate, formatTime, formatPrice } from "@/lib/booking-utils";
 import { Download, LogOut, Users } from "lucide-react";
 import dayjs from "dayjs";
 
+export const dynamic = 'force-dynamic';
+
 interface Booking {
     id: string;
     date: string;

@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, Calendar, Clock, MapPin, Phone, Mail } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 export default function BookingConfirmationPage() {
     const searchParams = useSearchParams();
     const slotsParam = searchParams.get("slots");

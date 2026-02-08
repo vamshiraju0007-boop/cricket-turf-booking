@@ -13,6 +13,8 @@ import { formatDate, formatTime, formatPrice, canCancelBooking } from "@/lib/boo
 import { Calendar, Clock, LogOut, Trophy, Home } from "lucide-react";
 import dayjs from "dayjs";
 
+export const dynamic = 'force-dynamic';
+
 interface Booking {
     id: string;
     date: string;
