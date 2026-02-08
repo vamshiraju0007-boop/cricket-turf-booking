@@ -116,6 +116,19 @@ export default function ManageBookingsModal({ open, onOpenChange }: ManageBookin
                         <div className="p-8 text-center text-gray-500">
                             Loading bookings...
                         </div>
+                    ) : !isAuthenticated ? (
+                        <div className="p-8 text-center">
+                            <p className="text-gray-500 mb-4">Please sign in to view your bookings</p>
+                            <Button
+                                className="gradient-primary text-white"
+                                onClick={() => {
+                                    onOpenChange(false);
+                                    router.push("/login");
+                                }}
+                            >
+                                Sign In
+                            </Button>
+                        </div>
                     ) : bookings.length === 0 ? (
                         <div className="p-8 text-center">
                             <p className="text-gray-500 mb-4">No upcoming bookings</p>
