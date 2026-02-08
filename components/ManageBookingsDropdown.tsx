@@ -35,15 +35,9 @@ export default function ManageBookingsDropdown() {
                     )
                     .slice(0, 3);
                 setBookings(upcoming);
-                setIsAuthenticated(true);
-            } else if (response.status === 401) {
-                // Not authenticated
-                setIsAuthenticated(false);
-                setBookings([]);
             }
         } catch (error) {
             console.error("Failed to load bookings:", error);
-            setIsAuthenticated(false);
         } finally {
             setLoading(false);
         }
