@@ -153,8 +153,9 @@ export default function EnhancedBookingCard({
                     </span>
                 </div>
 
+
                 {/* Action Buttons */}
-                {showActions && booking.status.toLowerCase() === "confirmed" && (
+                {showActions && (
                     <div className="flex gap-2 pt-4 border-t border-gray-100 mt-4">
                         {onEdit && (
                             <Button
@@ -167,7 +168,7 @@ export default function EnhancedBookingCard({
                                 Change Date
                             </Button>
                         )}
-                        {onCancel && (
+                        {onCancel && booking.status.toUpperCase() === "CONFIRMED" && (
                             <Button
                                 variant="outline"
                                 size="sm"
