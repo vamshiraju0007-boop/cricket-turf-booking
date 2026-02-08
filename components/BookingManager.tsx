@@ -154,7 +154,7 @@ export default function BookingManager({ onBookingsChange }: BookingManagerProps
                 className="border-primary/30 text-primary hover:bg-primary/5"
             >
                 <Edit2 className="w-4 h-4 mr-2" />
-                Edit Bookings
+                Manage Bookings
                 {bookedSlots.length > 0 && (
                     <Badge className="ml-2 bg-primary text-white">
                         {bookedSlots.length}
