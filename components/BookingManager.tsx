@@ -224,7 +224,7 @@ export default function BookingManager({ onBookingsChange }: BookingManagerProps
                                                                             <div>
                                                                                 <label className="text-xs text-gray-600 mb-1 block">Date</label>
                                                                                 <select
-                                                                                    value={editingSlot.new.date}
+                                                                                    value={editingSlot?.new.date || ''}
                                                                                     onChange={(e) => editingSlot && setEditingSlot({
                                                                                         ...editingSlot,
                                                                                         new: { ...editingSlot.new, date: e.target.value }
@@ -241,7 +241,7 @@ export default function BookingManager({ onBookingsChange }: BookingManagerProps
                                                                             <div>
                                                                                 <label className="text-xs text-gray-600 mb-1 block">Time</label>
                                                                                 <select
-                                                                                    value={editingSlot.new.time}
+                                                                                    value={editingSlot?.new.time || ''}
                                                                                     onChange={(e) => editingSlot && setEditingSlot({
                                                                                         ...editingSlot,
                                                                                         new: { ...editingSlot.new, time: e.target.value }
