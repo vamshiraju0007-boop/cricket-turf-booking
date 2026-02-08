@@ -8,6 +8,7 @@ import {
     MapPin, Clock, Users, Wifi, Car, Coffee, Star, Sparkles, Trophy, Shield,
     CheckCircle, Calendar, CreditCard, Zap, TrendingUp, Award, Target
 } from "lucide-react";
+import WeekCalendar from "@/components/WeekCalendar";
 
 export default function HomePage() {
 
@@ -343,6 +344,54 @@ export default function HomePage() {
                                 </Card>
                             ))}
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Interactive Booking Calendar Section */}
+            <section className="container mx-auto px-4 py-20 bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-50">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-12">
+                        <Badge className="mb-4 px-4 py-2 bg-primary text-white">
+                            <Calendar className="w-4 h-4 mr-2 inline" />
+                            Live Availability
+                        </Badge>
+                        <h3 className="text-4xl md:text-5xl font-bold mb-4">
+                            Check <span className="text-gradient">Available Slots</span>
+                        </h3>
+                        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                            Select your preferred date and time. Book instantly with just a few clicks!
+                        </p>
+                    </div>
+
+                    {/* Calendar Component */}
+                    <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-6 md:p-8 border border-primary/10">
+                        <WeekCalendar />
+                    </div>
+
+                    {/* Quick Info Cards */}
+                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                        <Card className="border-0 bg-white/60 backdrop-blur-sm shadow-lg">
+                            <CardContent className="pt-6 pb-6 text-center">
+                                <CheckCircle className="w-12 h-12 mx-auto mb-3 text-green-500" />
+                                <h4 className="font-bold text-gray-900 mb-2">Instant Confirmation</h4>
+                                <p className="text-sm text-gray-600">Get confirmed booking immediately</p>
+                            </CardContent>
+                        </Card>
+                        <Card className="border-0 bg-white/60 backdrop-blur-sm shadow-lg">
+                            <CardContent className="pt-6 pb-6 text-center">
+                                <CreditCard className="w-12 h-12 mx-auto mb-3 text-blue-500" />
+                                <h4 className="font-bold text-gray-900 mb-2">Secure Payment</h4>
+                                <p className="text-sm text-gray-600">Pay safely via Razorpay</p>
+                            </CardContent>
+                        </Card>
+                        <Card className="border-0 bg-white/60 backdrop-blur-sm shadow-lg">
+                            <CardContent className="pt-6 pb-6 text-center">
+                                <Zap className="w-12 h-12 mx-auto mb-3 text-orange-500" />
+                                <h4 className="font-bold text-gray-900 mb-2">Quick Booking</h4>
+                                <p className="text-sm text-gray-600">Complete in under 2 minutes</p>
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
             </section>
