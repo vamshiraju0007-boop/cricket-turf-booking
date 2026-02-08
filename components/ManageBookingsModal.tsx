@@ -22,6 +22,7 @@ export default function ManageBookingsModal({ open, onOpenChange }: ManageBookin
     const router = useRouter();
     const [bookings, setBookings] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(true);
 
     useEffect(() => {
         if (open) {
