@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, Calendar, Clock, MapPin, Phone, Mail } from "lucide-react";
+import { useEffect } from "react";
+import { celebrateBooking } from "@/lib/confetti";
 
 export const dynamic = 'force-dynamic';
 
@@ -34,6 +36,12 @@ export default function BookingConfirmationPage() {
         acc[slot.date].push(slot.time);
         return acc;
     }, {} as Record<string, string[]>);
+
+    // Celebrate booking success!
+    useEffect(() => {
+        celebrateBooking();
+    }, []);
+
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">

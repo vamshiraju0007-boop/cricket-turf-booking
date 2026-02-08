@@ -14,6 +14,10 @@ import BookingCalendar from "@/components/BookingCalendar";
 import BookingSteps from "@/components/BookingSteps";
 import QuickDateSelector from "@/components/QuickDateSelector";
 import AvailabilityLegend from "@/components/AvailabilityLegend";
+import EnhancedTimeSlotGrid from "@/components/EnhancedTimeSlotGrid";
+import BookingSummaryCard from "@/components/BookingSummaryCard";
+import { SlotGridSkeleton } from "@/components/LoadingSkeleton";
+import { celebrateBooking } from "@/lib/confetti";
 
 declare global {
     interface Window {
@@ -287,41 +291,19 @@ export default function VenuePage() {
                                     )}
                                 </div>
                                 <CardDescription>
-                                    Click on available slots to select. Selected slots will be highlighted.
+                                    Select one or more time slots. Slots are grouped by time of day for your convenience.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 {isLoadingSlots ? (
-                                    <p className="text-center py-8">Loading slots...</p>
+                                    <SlotGridSkeleton />
                                 ) : (
-                                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
-                                        {availableSlots.map((slot, index) => {
-                                            const isSelected = selectedSlots.some(
-                                                (s) => s.startTimeUtc.getTime() === slot.startTimeUtc.getTime()
-                                            );
-                                            return (
-                                                <Button
-                                                    key={index}
-                                                    variant={isSelected ? "default" : "outline"}
-                                                    className={`relative ${slot.isBooked
-                                                        ? "opacity-50 cursor-not-allowed bg-gray-100"
-                                                        : isSelected
-                                                            ? "gradient-primary text-white border-0 hover:opacity-90 shadow-md"
-                                                            : "hover:scale-105 transition-transform hover:border-primary/50"
-                                                        }`}
-                                                    disabled={slot.isBooked}
-                                                    onClick={() => toggleSlot(slot)}
-                                                >
-                                                    <div className="flex flex-col items-center">
-                                                        <span className="font-medium">{slot.label}</span>
-                                                        {isSelected && (
-                                                            <CheckCircle2 className="w-3 h-3 absolute top-1 right-1" />
-                                                        )}
-                                                    </div>
-                                                </Button>
-                                            );
-                                        })}
-                                    </div>
+                                    <EnhancedTimeSlotGrid
+                                        slots={availableSlots}
+                                        selectedSlots={selectedSlots}
+                                        onSlotToggle={toggleSlot}
+                                        isLoading={isLoadingSlots}
+                                    />
                                 )}
                             </CardContent>
                         </Card>
@@ -329,55 +311,12 @@ export default function VenuePage() {
 
                     {/* Booking Summary */}
                     <div className="lg:col-span-1">
-                        <Card className="sticky top-24 border-primary/10 bg-white/80 backdrop-blur-sm shadow-xl">
-                            <CardHeader className="gradient-primary text-white">
-                                <CardTitle>Booking Summary</CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-4">
-                                <div>
-                                    <p className="text-sm text-gray-600 mb-1">Date</p>
-                                    <p className="font-semibold">
-                                        {dayjs(selectedDate).format("DD MMM YYYY")}
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <p className="text-sm text-gray-600 mb-1">Selected Slots</p>
-                                    {selectedSlots.length === 0 ? (
-                                        <p className="text-sm text-gray-400">No slots selected</p>
-                                    ) : (
-                                        <div className="space-y-1">
-                                            {selectedSlots.map((slot, index) => (
-                                                <div key={index} className="flex justify-between text-sm">
-                                                    <span>{slot.label}</span>
-                                                    <span className="text-gray-600">
-                                                        {formatPrice(slot.pricePerHour)}
-                                                    </span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-
-                                <div className="border-t pt-4">
-                                    <div className="flex justify-between items-center mb-4 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50">
-                                        <span className="font-semibold text-lg">Total</span>
-                                        <span className="font-bold text-3xl text-gradient">
-                                            {formatPrice(totalAmount)}
-                                        </span>
-                                    </div>
-
-                                    <Button
-                                        className="w-full gradient-primary text-white border-0 hover:opacity-90 shadow-lg"
-                                        size="lg"
-                                        onClick={handleBooking}
-                                        disabled={selectedSlots.length === 0 || isLoading}
-                                    >
-                                        {isLoading ? "Processing..." : "Proceed to Payment →"}
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <BookingSummaryCard
+                            selectedDate={selectedDate}
+                            selectedSlots={selectedSlots}
+                            onProceedToPayment={handleBooking}
+                            isLoading={isLoading}
+                        />
                     </div>
                 </div>
             </div>
