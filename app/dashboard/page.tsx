@@ -13,6 +13,8 @@ import { formatDate, formatTime, formatPrice, canCancelBooking } from "@/lib/boo
 import { Calendar, Clock, LogOut, Trophy, Home } from "lucide-react";
 import dayjs from "dayjs";
 import EmptyBookingsState from "@/components/EmptyBookingsState";
+import DashboardStats from "@/components/DashboardStats";
+import EnhancedBookingCard from "@/components/EnhancedBookingCard";
 
 export const dynamic = 'force-dynamic';
 
@@ -112,6 +114,15 @@ export default function DashboardPage() {
 
     const cancelledBookings = bookings.filter((b) => b.status === "CANCELLED");
 
+    // Calculate stats
+    const totalHoursBooked = bookings
+        .filter(b => b.status === "CONFIRMED")
+        .reduce((sum, b) => sum + b.slotsCount, 0);
+    const totalSpent = bookings
+        .filter(b => b.status === "CONFIRMED")
+        .reduce((sum, b) => sum + b.amountPaise, 0) / 100;
+
+
     const renderBookingCard = (booking: Booking, showCancel: boolean = false) => (
         <Card key={booking.id} className="border-primary/10 bg-white/80 backdrop-blur-sm shadow-lg card-hover">
             <CardHeader>
@@ -203,10 +214,20 @@ export default function DashboardPage() {
             </header>
 
             <div className="container mx-auto px-4 py-8 max-w-6xl">
-                <div className="mb-8 p-6 rounded-2xl gradient-primary text-white">
-                    <h2 className="text-3xl font-bold mb-2">Welcome, {session?.data?.user?.name}!</h2>
-                    <p className="text-white/90">Manage your turf bookings</p>
+                <div className="mb-8">
+                    <h1 className="text-4xl font-bold mb-2">
+                        Welcome, <span className="text-gradient">{session?.data?.user?.name || "User"}</span>!
+                    </h1>
+                    <p className="text-gray-600">Manage your bookings and track your cricket sessions</p>
                 </div>
+
+                {/* Dashboard Stats */}
+                <DashboardStats
+                    totalBookings={bookings.length}
+                    upcomingBookings={upcomingBookings.length}
+                    totalHoursBooked={totalHoursBooked}
+                    totalSpent={totalSpent}
+                />
 
                 <Tabs defaultValue="upcoming" className="space-y-6">
                     <TabsList>
@@ -224,9 +245,14 @@ export default function DashboardPage() {
                             <EmptyBookingsState />
                         ) : (
                             <div className="grid md:grid-cols-2 gap-4">
-                                {upcomingBookings.map((booking) =>
-                                    renderBookingCard(booking, true)
-                                )}
+                                {upcomingBookings.map((booking) => (
+                                    <EnhancedBookingCard
+                                        key={booking.id}
+                                        booking={booking}
+                                        onCancel={handleCancelBooking}
+                                        showActions={true}
+                                    />
+                                ))}
                             </div>
                         )}
                     </TabsContent>
@@ -240,7 +266,13 @@ export default function DashboardPage() {
                             </Card>
                         ) : (
                             <div className="grid md:grid-cols-2 gap-4">
-                                {pastBookings.map((booking) => renderBookingCard(booking))}
+                                {pastBookings.map((booking) => (
+                                    <EnhancedBookingCard
+                                        key={booking.id}
+                                        booking={booking}
+                                        showActions={false}
+                                    />
+                                ))}
                             </div>
                         )}
                     </TabsContent>
@@ -254,7 +286,13 @@ export default function DashboardPage() {
                             </Card>
                         ) : (
                             <div className="grid md:grid-cols-2 gap-4">
-                                {cancelledBookings.map((booking) => renderBookingCard(booking))}
+                                {cancelledBookings.map((booking) => (
+                                    <EnhancedBookingCard
+                                        key={booking.id}
+                                        booking={booking}
+                                        showActions={false}
+                                    />
+                                ))}
                             </div>
                         )}
                     </TabsContent>
