@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
     MapPin, Clock, Users, Wifi, Car, Coffee, Star, Sparkles, Trophy, Shield,
-    CheckCircle, Calendar, CreditCard, Zap, TrendingUp, Award, Target
+    CheckCircle, Calendar, CreditCard, Zap, TrendingUp, Award, Target, CalendarDays
 } from "lucide-react";
 import WeekCalendar from "@/components/WeekCalendar";
 
@@ -104,6 +104,12 @@ export default function HomePage() {
                         <a href="#testimonials" className="text-gray-700 hover:text-primary transition-colors">Reviews</a>
                     </nav>
                     <div className="flex items-center gap-2">
+                        <Link href="/dashboard">
+                            <Button variant="outline" className="border-primary/30 hover:bg-primary/5 hover:border-primary hidden sm:flex">
+                                <CalendarDays className="w-4 h-4 mr-2" />
+                                Manage Bookings
+                            </Button>
+                        </Link>
                         <Link href="/login">
                             <Button variant="ghost" className="hover:bg-primary/10">Sign In</Button>
                         </Link>
