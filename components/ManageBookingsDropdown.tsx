@@ -19,7 +19,6 @@ export default function ManageBookingsDropdown() {
     const router = useRouter();
     const [bookings, setBookings] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const loadBookings = async () => {
 
