@@ -11,6 +11,9 @@ import { Calendar, Clock, MapPin, Trophy, ArrowLeft, CheckCircle2 } from "lucide
 import { generateTimeSlots, calculateTotalAmount, formatPrice, TimeSlot } from "@/lib/booking-utils";
 import dayjs from "dayjs";
 import BookingCalendar from "@/components/BookingCalendar";
+import BookingSteps from "@/components/BookingSteps";
+import QuickDateSelector from "@/components/QuickDateSelector";
+import AvailabilityLegend from "@/components/AvailabilityLegend";
 
 declare global {
     interface Window {
@@ -220,6 +223,9 @@ export default function VenuePage() {
             </header>
 
             <div className="container mx-auto px-4 py-8 max-w-6xl">
+                {/* Booking Progress Steps */}
+                <BookingSteps currentStep={selectedSlots.length > 0 ? 2 : 1} />
+
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Main Content */}
                     <div className="lg:col-span-2 space-y-6">
@@ -255,30 +261,16 @@ export default function VenuePage() {
 
 
                         {/* Date Selector with Calendar */}
-                        <BookingCalendar
-                            selectedDate={selectedDate}
-                            onDateChange={setSelectedDate}
-                        />
+                        <div className="space-y-4">
+                            <QuickDateSelector onDateSelect={setSelectedDate} />
+                            <BookingCalendar
+                                selectedDate={selectedDate}
+                                onDateChange={setSelectedDate}
+                            />
+                        </div>
 
                         {/* Slot Status Legend */}
-                        <Card className="border-primary/10 bg-white/80 backdrop-blur-sm shadow-lg">
-                            <CardContent className="pt-6">
-                                <div className="flex flex-wrap gap-4 justify-center">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-4 h-4 rounded bg-gradient-to-br from-primary to-accent"></div>
-                                        <span className="text-sm text-gray-700">Selected</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-4 h-4 rounded border-2 border-primary/30"></div>
-                                        <span className="text-sm text-gray-700">Available</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-4 h-4 rounded bg-gray-200"></div>
-                                        <span className="text-sm text-gray-700">Booked</span>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <AvailabilityLegend />
 
                         {/* Time Slots */}
                         <Card className="border-primary/10 bg-white/80 backdrop-blur-sm shadow-lg">

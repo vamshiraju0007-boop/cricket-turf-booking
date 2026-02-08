@@ -29,42 +29,45 @@ export default function BookingCalendar({
                 </CardTitle>
             </CardHeader>
             <CardContent className="flex justify-center">
-                <DayPicker
-                    mode="single"
-                    selected={selectedDate}
-                    onSelect={(date) => {
-                        if (date) {
-                            onDateChange(date);
-                            setMonth(date);
-                        }
-                    }}
-                    month={month}
-                    onMonthChange={setMonth}
-                    disabled={{ before: today }}
-                    showOutsideDays
-                    captionLayout="dropdown-buttons"
-                    fromYear={2024}
-                    toYear={2030}
-                    classNames={{
-                        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-                        month: "space-y-4",
-                        caption: "flex justify-center pt-1 relative items-center",
-                        caption_label: "text-sm font-medium",
-                        nav: "space-x-1 flex items-center",
-                        nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
-                        table: "w-full border-collapse space-y-1",
-                        head_row: "flex",
-                        head_cell: "text-gray-500 rounded-md w-9 font-normal text-[0.8rem]",
-                        row: "flex w-full mt-2",
-                        cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-                        day: "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-primary/10 rounded-md",
-                        day_selected: "bg-gradient-to-br from-primary to-accent text-white hover:bg-primary hover:text-white focus:bg-primary focus:text-white",
-                        day_today: "bg-accent/10 text-accent-foreground font-bold",
-                        day_outside: "text-gray-400 opacity-50",
-                        day_disabled: "text-gray-300 opacity-50",
-                        day_hidden: "invisible",
-                    }}
-                />
+                <div className="booking-calendar">
+                    <DayPicker
+                        mode="single"
+                        selected={selectedDate}
+                        onSelect={(date) => {
+                            if (date) {
+                                onDateChange(date);
+                                setMonth(date);
+                            }
+                        }}
+                        month={month}
+                        onMonthChange={setMonth}
+                        disabled={{ before: today }}
+                        showOutsideDays
+                        captionLayout="dropdown-buttons"
+                        fromYear={2024}
+                        toYear={2030}
+                        classNames={{
+                            months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+                            month: "space-y-4",
+                            caption: "flex justify-center pt-1 pb-4 relative items-center gap-2",
+                            caption_label: "text-sm font-medium",
+                            caption_dropdowns: "flex gap-2",
+                            nav: "space-x-1 flex items-center",
+                            nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+                            table: "w-full border-collapse space-y-1",
+                            head_row: "flex",
+                            head_cell: "text-gray-500 rounded-md w-9 font-normal text-[0.8rem]",
+                            row: "flex w-full mt-2",
+                            cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                            day: "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-primary/10 rounded-md",
+                            day_selected: "bg-gradient-to-br from-primary to-accent text-white hover:bg-primary hover:text-white focus:bg-primary focus:text-white",
+                            day_today: "bg-accent/10 text-accent-foreground font-bold",
+                            day_outside: "text-gray-400 opacity-50",
+                            day_disabled: "text-gray-300 opacity-50",
+                            day_hidden: "invisible",
+                        }}
+                    />
+                </div>
             </CardContent>
         </Card>
     );

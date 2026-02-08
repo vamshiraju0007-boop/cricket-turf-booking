@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { formatDate, formatTime, formatPrice, canCancelBooking } from "@/lib/booking-utils";
 import { Calendar, Clock, LogOut, Trophy, Home } from "lucide-react";
 import dayjs from "dayjs";
+import EmptyBookingsState from "@/components/EmptyBookingsState";
 
 export const dynamic = 'force-dynamic';
 
@@ -220,14 +221,7 @@ export default function DashboardPage() {
 
                     <TabsContent value="upcoming" className="space-y-4">
                         {upcomingBookings.length === 0 ? (
-                            <Card>
-                                <CardContent className="py-12 text-center">
-                                    <p className="text-gray-500 mb-4">No upcoming bookings</p>
-                                    <Button onClick={() => router.push("/venue")}>
-                                        Book a Slot
-                                    </Button>
-                                </CardContent>
-                            </Card>
+                            <EmptyBookingsState />
                         ) : (
                             <div className="grid md:grid-cols-2 gap-4">
                                 {upcomingBookings.map((booking) =>
