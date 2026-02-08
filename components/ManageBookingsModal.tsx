@@ -43,6 +43,11 @@ export default function ManageBookingsModal({ open, onOpenChange }: ManageBookin
                         new Date(b.startTimeUtc) > new Date()
                     );
                 setBookings(upcoming);
+                setIsAuthenticated(true);
+            } else if (response.status === 401) {
+                // User is not authenticated
+                setIsAuthenticated(false);
+                setBookings([]);
             }
         } catch (error) {
             console.error("Failed to load bookings:", error);
