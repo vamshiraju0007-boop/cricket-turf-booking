@@ -13,6 +13,7 @@ import WeekCalendar from "@/components/WeekCalendar";
 import ManageBookingsModal from "@/components/ManageBookingsModal";
 
 export default function HomePage() {
+    const [isManageBookingsOpen, setIsManageBookingsOpen] = useState(false);
 
     const features = [
         {
