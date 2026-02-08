@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  USER
+  OWNER
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  CREATED
+  PAID
+  FAILED
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  phone        String?
+  passwordHash String
+  role         Role      @default(USER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  bookings     Booking[]
+}
+
+model Booking {
+  id           String        @id @default(cuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date         DateTime      // Service date (date component only, in IST context)
+  startTimeUtc DateTime      // Actual start time in UTC
+  endTimeUtc   DateTime      // Actual end time in UTC
+  slotsCount   Int           // Number of hourly slots booked
+  amountPaise  Int           // Total amount in paise (₹1 = 100 paise)
+  status       BookingStatus @default(PENDING)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  payment      Payment?
+
+  @@unique([startTimeUtc, endTimeUtc, status], name: "no_overlap")
+  @@index([userId])
+  @@index([date])
+  @@index([status])
+}
+
+model Payment {
+  id                 String        @id @default(cuid())
+  bookingId          String        @unique
+  booking            Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  provider           String        @default("razorpay")
+  razorpayOrderId    String?       @unique
+  razorpayPaymentId  String?
+  razorpaySignature  String?
+  amountPaise        Int
+  currency           String        @default("INR")
+  status             PaymentStatus @default(CREATED)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  @@index([razorpayOrderId])
+  @@index([status])
+}
