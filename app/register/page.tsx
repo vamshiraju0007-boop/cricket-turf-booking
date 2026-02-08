@@ -51,9 +51,16 @@ export default function RegisterPage() {
             const data = await response.json();
 
             if (!response.ok) {
+                let errorMessage = data.error || "Something went wrong";
+                if (data.details && Array.isArray(data.details)) {
+                    // Extract messages from Zod errors
+                    const details = data.details.map((err: any) => err.message).join(", ");
+                    errorMessage = `${errorMessage}: ${details}`;
+                }
+
                 toast({
                     title: "Registration failed",
-                    description: data.error || "Something went wrong",
+                    description: errorMessage,
                     variant: "destructive",
                 });
                 return;
@@ -141,6 +148,7 @@ export default function RegisterPage() {
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="password" className="text-sm font-semibold">Password</Label>
+                                <p className="text-xs text-muted-foreground mb-1">Must be at least 8 chars, with 1 uppercase & 1 number</p>
                                 <Input
                                     id="password"
                                     type="password"

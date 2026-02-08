@@ -175,15 +175,7 @@ export default function WeekCalendar({ onSlotSelect }: { onSlotSelect?: (date: D
                                         : "border-gray-300"
                                     }`}
                             >
-                                {/* Month label for today */}
-                                {todayFlag && (
-                                    <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-                                        <div className="bg-primary text-white text-xs font-bold px-3 py-1 rounded">
-                                            {formatMonthShort(day)}
-                                        </div>
-                                        <div className="w-0.5 h-6 bg-primary"></div>
-                                    </div>
-                                )}
+
 
                                 <div
                                     className={`text-xs font-medium uppercase mb-1 ${past ? "text-gray-400" : "text-gray-600"

@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
+import { generateVerificationToken } from '@/lib/tokens';
+import { sendVerificationEmail } from '@/lib/mail';
 
 const registerSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -51,8 +53,14 @@ export async function POST(request: Request) {
             },
         });
 
+        // Generate verification token
+        const verificationToken = await generateVerificationToken(validatedData.email);
+
+        // Send verification email
+        await sendVerificationEmail(verificationToken.email, verificationToken.token);
+
         return NextResponse.json(
-            { message: 'User created successfully', user },
+            { message: 'User created successfully. Please check your email to verify.', user },
             { status: 201 }
         );
     } catch (error) {
