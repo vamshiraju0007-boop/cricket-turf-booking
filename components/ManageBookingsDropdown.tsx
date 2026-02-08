@@ -93,17 +93,6 @@ export default function ManageBookingsDropdown() {
                     <div className="p-4 text-center text-sm text-gray-500">
                         Loading...
                     </div>
-                ) : !isAuthenticated ? (
-                    <div className="p-4 text-center">
-                        <p className="text-sm text-gray-500 mb-3">Please sign in to view bookings</p>
-                        <Button
-                            size="sm"
-                            className="gradient-primary text-white"
-                            onClick={() => router.push("/login")}
-                        >
-                            Sign In
-                        </Button>
-                    </div>
                 ) : bookings.length === 0 ? (
                     <div className="p-4 text-center">
                         <p className="text-sm text-gray-500 mb-3">No upcoming bookings</p>
