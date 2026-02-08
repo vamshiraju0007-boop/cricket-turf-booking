@@ -435,37 +435,6 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Final CTA Section */}
-            <section className="container mx-auto px-4 py-20">
-                <div className="max-w-4xl mx-auto text-center gradient-primary rounded-3xl p-12 md:p-16 shadow-2xl relative overflow-hidden">
-                    {/* Decorative elements */}
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-
-                    <div className="relative z-10">
-                        <Trophy className="w-16 h-16 mx-auto mb-6 text-white animate-pulse" />
-                        <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                            Ready to Play?
-                        </h3>
-                        <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
-                            Book your slot now and experience the best cricket turf in Bangalore.
-                            Join hundreds of happy players today!
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Link href="/venue">
-                                <Button size="lg" className="text-lg px-12 py-7 bg-white text-primary hover:bg-gray-100 shadow-xl hover:shadow-2xl transition-all hover:scale-105">
-                                    Book Your Slot →
-                                </Button>
-                            </Link>
-                            <Link href="/register">
-                                <Button size="lg" variant="outline" className="text-lg px-12 py-7 border-2 border-white text-white hover:bg-white/10">
-                                    Create Account
-                                </Button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             {/* Footer */}
             <footer className="bg-gray-900 text-white py-12 mt-20">
