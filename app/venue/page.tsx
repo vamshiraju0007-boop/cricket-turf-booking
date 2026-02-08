@@ -21,7 +21,7 @@ declare global {
 export const dynamic = 'force-dynamic';
 
 export default function VenuePage() {
-    const { data: session, status } = useSession();
+    const session = useSession();
     const router = useRouter();
     const { toast } = useToast();
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -29,6 +29,8 @@ export default function VenuePage() {
     const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingSlots, setIsLoadingSlots] = useState(false);
+
+    const status = session?.status || 'loading';
 
     useEffect(() => {
         if (status === "unauthenticated") {
@@ -167,8 +169,8 @@ export default function VenuePage() {
                     }
                 },
                 prefill: {
-                    name: session?.user?.name,
-                    email: session?.user?.email,
+                    name: session?.data?.user?.name,
+                    email: session?.data?.user?.email,
                 },
                 theme: {
                     color: "#6366f1",

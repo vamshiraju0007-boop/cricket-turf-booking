@@ -31,11 +31,13 @@ interface Booking {
 }
 
 export default function DashboardPage() {
-    const { data: session, status } = useSession();
+    const session = useSession();
     const router = useRouter();
     const { toast } = useToast();
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const status = session?.status || 'loading';
 
     useEffect(() => {
         if (status === "unauthenticated") {
@@ -186,7 +188,7 @@ export default function DashboardPage() {
                         <Button onClick={() => router.push("/venue")} className="gradient-primary text-white border-0 hover:opacity-90">
                             Book Turf
                         </Button>
-                        {session?.user?.role === "OWNER" && (
+                        {session?.data?.user?.role === "OWNER" && (
                             <Button onClick={() => router.push("/owner")} variant="outline" className="border-primary/30 hover:border-primary hover:bg-primary/5">
                                 Owner Dashboard
                             </Button>
@@ -201,7 +203,7 @@ export default function DashboardPage() {
 
             <div className="container mx-auto px-4 py-8 max-w-6xl">
                 <div className="mb-8 p-6 rounded-2xl gradient-primary text-white">
-                    <h2 className="text-3xl font-bold mb-2">Welcome, {session?.user?.name}!</h2>
+                    <h2 className="text-3xl font-bold mb-2">Welcome, {session?.data?.user?.name}!</h2>
                     <p className="text-white/90">Manage your turf bookings</p>
                 </div>
 

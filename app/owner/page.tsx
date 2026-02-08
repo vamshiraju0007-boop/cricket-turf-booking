@@ -50,7 +50,7 @@ interface User {
 }
 
 export default function OwnerDashboard() {
-    const { data: session, status } = useSession();
+    const session = useSession();
     const router = useRouter();
     const { toast } = useToast();
     const [bookings, setBookings] = useState<Booking[]>([]);
@@ -62,11 +62,13 @@ export default function OwnerDashboard() {
         status: 'ALL',
     });
 
+    const status = session?.status || 'loading';
+
     useEffect(() => {
         if (status === "unauthenticated") {
             router.push("/login");
         } else if (status === "authenticated") {
-            if (session?.user?.role !== "OWNER") {
+            if (session?.data?.user?.role !== "OWNER") {
                 router.push("/dashboard");
             } else {
                 loadBookings();
@@ -76,7 +78,7 @@ export default function OwnerDashboard() {
     }, [status, session, router]);
 
     useEffect(() => {
-        if (session?.user?.role === "OWNER") {
+        if (session?.data?.user?.role === "OWNER") {
             loadBookings();
         }
     }, [filters]);
@@ -178,7 +180,7 @@ export default function OwnerDashboard() {
 
             <div className="container mx-auto px-4 py-8 max-w-7xl">
                 <div className="mb-6">
-                    <h2 className="text-3xl font-bold">Welcome, {session?.user?.name}!</h2>
+                    <h2 className="text-3xl font-bold">Welcome, {session?.data?.user?.name}!</h2>
                     <p className="text-gray-600">Manage all bookings and users</p>
                 </div>
 
