@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -17,13 +16,12 @@ import { formatDate, formatTime } from "@/lib/booking-utils";
 import { useRouter } from "next/navigation";
 
 export default function ManageBookingsDropdown() {
-    const { data: session, status } = useSession();
     const router = useRouter();
     const [bookings, setBookings] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const loadBookings = async () => {
-        if (!session) return;
 
         setLoading(true);
         try {
@@ -38,9 +36,15 @@ export default function ManageBookingsDropdown() {
                     )
                     .slice(0, 3);
                 setBookings(upcoming);
+                setIsAuthenticated(true);
+            } else if (response.status === 401) {
+                // Not authenticated
+                setIsAuthenticated(false);
+                setBookings([]);
             }
         } catch (error) {
             console.error("Failed to load bookings:", error);
+            setIsAuthenticated(false);
         } finally {
             setLoading(false);
         }
@@ -70,20 +74,6 @@ export default function ManageBookingsDropdown() {
         router.push(`/venue?edit=${booking.id}&date=${booking.date}`);
     };
 
-    // If not logged in, show login button
-    if (status === "unauthenticated") {
-        return (
-            <Button
-                variant="outline"
-                className="border-primary/30 hover:bg-primary/5 hover:border-primary hidden sm:flex"
-                onClick={() => router.push("/login")}
-            >
-                <CalendarDays className="w-4 h-4 mr-2" />
-                Manage Bookings
-            </Button>
-        );
-    }
-
     return (
         <DropdownMenu onOpenChange={(open) => open && loadBookings()}>
             <DropdownMenuTrigger asChild>
@@ -109,6 +99,17 @@ export default function ManageBookingsDropdown() {
                 {loading ? (
                     <div className="p-4 text-center text-sm text-gray-500">
                         Loading...
+                    </div>
+                ) : !isAuthenticated ? (
+                    <div className="p-4 text-center">
+                        <p className="text-sm text-gray-500 mb-3">Please sign in to view bookings</p>
+                        <Button
+                            size="sm"
+                            className="gradient-primary text-white"
+                            onClick={() => router.push("/login")}
+                        >
+                            Sign In
+                        </Button>
                     </div>
                 ) : bookings.length === 0 ? (
                     <div className="p-4 text-center">
