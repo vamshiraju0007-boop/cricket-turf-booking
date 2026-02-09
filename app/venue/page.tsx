@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
-import { Calendar, Clock, MapPin, Trophy, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Calendar, Clock, MapPin, Trophy, ArrowLeft, CheckCircle2, IndianRupee } from "lucide-react";
 import { generateTimeSlots, calculateTotalAmount, formatPrice, TimeSlot } from "@/lib/booking-utils";
 import dayjs from "dayjs";
 import BookingCalendar from "@/components/BookingCalendar";
@@ -159,11 +159,15 @@ export default function VenuePage() {
                         const result = await verifyResponse.json();
 
                         if (result.success) {
+                            celebrateBooking();
                             toast({
                                 title: "Success!",
                                 description: "Booking confirmed successfully",
                             });
-                            router.push("/dashboard");
+                            // Delay redirect slightly to show confetti
+                            setTimeout(() => {
+                                router.push("/dashboard");
+                            }, 2000);
                         } else {
                             throw new Error(result.error);
                         }
@@ -319,6 +323,29 @@ export default function VenuePage() {
                         />
                     </div>
                 </div>
+            </div>
+
+            {/* Mobile Sticky Action Bar */}
+            <div className={`md:hidden fixed bottom-0 left-0 right-0 z-50 transition-all duration-300 transform ${selectedSlots.length > 0 ? "translate-y-0" : "translate-y-full"}`}>
+                <div className="bg-white/95 backdrop-blur-md border-t border-primary/10 p-4 shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
+                    <div className="flex items-center justify-between gap-4 max-w-sm mx-auto">
+                        <div className="flex-1">
+                            <p className="text-xs text-gray-500 font-medium">Selected {selectedSlots.length} slots</p>
+                            <p className="text-lg font-bold text-primary flex items-center">
+                                <IndianRupee className="w-4 h-4" />
+                                {formatPrice(totalAmount)}
+                            </p>
+                        </div>
+                        <Button
+                            onClick={handleBooking}
+                            disabled={isLoading}
+                            className="flex-[1.5] gradient-primary text-white border-0 py-6 font-bold shadow-lg active:scale-95 transition-transform"
+                        >
+                            {isLoading ? "Processing..." : "Checkout Now →"}
+                        </Button>
+                    </div>
+                </div>
+                <div className="h-safe-area-inset-bottom bg-white/95"></div>
             </div>
         </div>
     );
