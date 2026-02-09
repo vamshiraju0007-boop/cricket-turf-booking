@@ -130,16 +130,6 @@ export default function LoginPage() {
                     </form>
                 </Card>
 
-                {/* Demo credentials */}
-                <Card className="mt-4 border-primary/10 bg-white/60 backdrop-blur-sm">
-                    <CardContent className="pt-4 pb-4">
-                        <p className="text-xs font-semibold text-gray-700 mb-2">Demo Accounts:</p>
-                        <div className="space-y-1 text-xs text-gray-600">
-                            <p>Owner: owner@turf.com / Owner@1234</p>
-                            <p>User: user@example.com / User@1234</p>
-                        </div>
-                    </CardContent>
-                </Card>
             </div>
         </div>
     );

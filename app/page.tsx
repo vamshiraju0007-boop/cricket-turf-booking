@@ -39,12 +39,6 @@ export default function HomePage() {
                         </div>
                         <h1 className="text-2xl font-bold text-gradient">CricketTurf</h1>
                     </Link>
-                    <nav className="hidden md:flex items-center gap-6">
-                        <a href="#how-it-works" className="text-gray-700 hover:text-primary transition-colors">How It Works</a>
-                        <a href="#about" className="text-gray-700 hover:text-primary transition-colors">About</a>
-                        <a href="#pricing" className="text-gray-700 hover:text-primary transition-colors">Pricing</a>
-                        <a href="#availability" className="text-gray-700 hover:text-primary transition-colors">Availability</a>
-                    </nav>
                     <div className="flex items-center gap-2">
                         <Button
                             variant="outline"
@@ -55,11 +49,11 @@ export default function HomePage() {
                             Manage Bookings
                         </Button>
                         <Link href="/login">
-                            <Button variant="ghost" className="hover:bg-primary/10">Sign In</Button>
+                            <Button variant="ghost" className="hover:bg-primary/10">login In</Button>
                         </Link>
                         <Link href="/register">
                             <Button className="gradient-primary text-white border-0 hover:opacity-90">
-                                Get Started
+                                Sign In
                             </Button>
                         </Link>
                     </div>
@@ -297,15 +291,6 @@ export default function HomePage() {
                             <p className="text-gray-400">
                                 Bangalore's premier cricket turf booking platform
                             </p>
-                        </div>
-                        <div>
-                            <h4 className="font-semibold mb-4">Quick Links</h4>
-                            <ul className="space-y-2 text-gray-400">
-                                <li><a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a></li>
-                                <li><a href="#about" className="hover:text-white transition-colors">About</a></li>
-                                <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
-                                <li><a href="#availability" className="hover:text-white transition-colors">Availability</a></li>
-                            </ul>
                         </div>
                         <div>
                             <h4 className="font-semibold mb-4">Account</h4>
