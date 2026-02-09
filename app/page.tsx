@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-    MapPin, Clock, Users, Wifi, Car, Coffee, Star, Sparkles, Trophy, Shield,
-    CheckCircle, Calendar, CreditCard, Zap, TrendingUp, Award, Target, CalendarDays
+    Sparkles, Trophy, CheckCircle, Calendar, CreditCard, Zap, TrendingUp, Target, CalendarDays
 } from "lucide-react";
 import WeekCalendar from "@/components/WeekCalendar";
 import ManageBookingsModal from "@/components/ManageBookingsModal";
@@ -15,71 +14,11 @@ import ManageBookingsModal from "@/components/ManageBookingsModal";
 export default function HomePage() {
     const [isManageBookingsOpen, setIsManageBookingsOpen] = useState(false);
 
-    const features = [
-        {
-            icon: Trophy,
-            title: "Professional Grade Turf",
-            desc: "International standard playing surface with premium quality",
-            color: "from-blue-500 to-blue-600"
-        },
-        {
-            icon: Shield,
-            title: "Safe & Secure",
-            desc: "24/7 security, CCTV monitoring, and safe environment",
-            color: "from-purple-500 to-purple-600"
-        },
-        {
-            icon: Sparkles,
-            title: "Premium Facilities",
-            desc: "Best-in-class amenities and modern infrastructure",
-            color: "from-indigo-500 to-indigo-600"
-        },
-        {
-            icon: Zap,
-            title: "Instant Booking",
-            desc: "Book your slot in seconds with our seamless system",
-            color: "from-orange-500 to-orange-600"
-        },
-    ];
-
-    const amenities = [
-        { icon: Wifi, label: "Free WiFi", color: "text-blue-500", bg: "bg-blue-50" },
-        { icon: Car, label: "Free Parking", color: "text-purple-500", bg: "bg-purple-50" },
-        { icon: Coffee, label: "Refreshments", color: "text-indigo-500", bg: "bg-indigo-50" },
-        { icon: Users, label: "Changing Rooms", color: "text-violet-500", bg: "bg-violet-50" },
-        { icon: Trophy, label: "Equipment", color: "text-green-500", bg: "bg-green-50" },
-        { icon: Award, label: "Coaching", color: "text-orange-500", bg: "bg-orange-50" },
-    ];
-
     const bookingSteps = [
         { icon: Calendar, title: "Choose Date & Time", desc: "Select your preferred slot from our calendar" },
         { icon: CheckCircle, title: "Confirm Booking", desc: "Review your selection and confirm details" },
         { icon: CreditCard, title: "Secure Payment", desc: "Pay securely via Razorpay" },
         { icon: Target, title: "Play Cricket!", desc: "Show up and enjoy your game" },
-    ];
-
-    const testimonials = [
-        {
-            name: "Rajesh Kumar",
-            role: "Cricket Enthusiast",
-            rating: 5,
-            text: "Best cricket turf in Bangalore! The booking process is super smooth and the facilities are top-notch. Highly recommended!",
-            avatar: "RK"
-        },
-        {
-            name: "Priya Sharma",
-            role: "Team Captain",
-            rating: 5,
-            text: "We book this turf every weekend for our team practice. The quality is consistent and the staff is very professional.",
-            avatar: "PS"
-        },
-        {
-            name: "Amit Patel",
-            role: "Regular Player",
-            rating: 5,
-            text: "Excellent turf quality and great amenities. The online booking system makes it so convenient. Worth every rupee!",
-            avatar: "AP"
-        },
     ];
 
     const stats = [
@@ -98,13 +37,13 @@ export default function HomePage() {
                         <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
                             <Trophy className="w-6 h-6 text-white" />
                         </div>
-                        <h1 className="text-2xl font-bold text-gradient">CricketTurf <span className="text-[10px] opacity-50 align-top">v1.2 (Deployed)</span></h1>
+                        <h1 className="text-2xl font-bold text-gradient">CricketTurf</h1>
                     </Link>
                     <nav className="hidden md:flex items-center gap-6">
-                        <a href="#features" className="text-gray-700 hover:text-primary transition-colors">Features</a>
-                        <a href="#amenities" className="text-gray-700 hover:text-primary transition-colors">Amenities</a>
+                        <a href="#how-it-works" className="text-gray-700 hover:text-primary transition-colors">How It Works</a>
+                        <a href="#about" className="text-gray-700 hover:text-primary transition-colors">About</a>
                         <a href="#pricing" className="text-gray-700 hover:text-primary transition-colors">Pricing</a>
-                        <a href="#testimonials" className="text-gray-700 hover:text-primary transition-colors">Reviews</a>
+                        <a href="#availability" className="text-gray-700 hover:text-primary transition-colors">Availability</a>
                     </nav>
                     <div className="flex items-center gap-2">
                         <Button
@@ -151,7 +90,7 @@ export default function HomePage() {
 
                         {/* Main Heading */}
                         <h2 className="text-5xl md:text-7xl font-bold text-gray-900 leading-tight">
-                            Book Your Elite
+                            Book Your <span className="text-gradient">Elite</span>
                             <span className="block text-gradient mt-2 animate-slide-up">Cricket Turf Slot</span>
                         </h2>
 
@@ -188,31 +127,6 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Features Section */}
-            <section id="features" className="container mx-auto px-4 py-20">
-                <div className="text-center mb-12">
-                    <h3 className="text-4xl md:text-5xl font-bold mb-4">
-                        Why Choose <span className="text-gradient">CricketTurf</span>?
-                    </h3>
-                    <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                        We provide the best cricket experience with premium facilities and seamless booking
-                    </p>
-                </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                    {features.map((feature, index) => (
-                        <Card key={index} className="card-hover border-0 bg-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden group">
-                            <div className={`h-2 w-full bg-gradient-to-r ${feature.color}`}></div>
-                            <CardContent className="pt-8 pb-6 text-center">
-                                <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r ${feature.color} flex items-center justify-center group-hover:scale-110 transition-all duration-300 group-hover:rotate-3`}>
-                                    <feature.icon className="w-8 h-8 text-white" />
-                                </div>
-                                <h4 className="text-xl font-bold mb-2 text-gray-900 group-hover:text-primary transition-colors">{feature.title}</h4>
-                                <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            </section>
 
             {/* How It Works Section */}
             <section id="how-it-works" className="bg-white/40 backdrop-blur-sm py-20">
@@ -250,8 +164,8 @@ export default function HomePage() {
             </section>
 
             {/* Turf Details with Pricing */}
-            <section id="pricing" className="container mx-auto px-4 py-20">
-                <div className="max-w-3xl mx-auto space-y-12">
+            <section id="about" className="container mx-auto px-4 py-20">
+                <div className="max-w-4xl mx-auto space-y-12">
                     {/* Details */}
                     <div className="space-y-8 text-center">
                         <div className="space-y-4">
@@ -265,9 +179,6 @@ export default function HomePage() {
 
                         <div className="grid sm:grid-cols-3 gap-6">
                             <div className="flex flex-col items-center gap-3 p-6 rounded-2xl bg-white shadow-lg border border-primary/10 hover:shadow-xl transition-all">
-                                <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0">
-                                    <MapPin className="w-6 h-6 text-white" />
-                                </div>
                                 <div className="text-center">
                                     <p className="font-semibold text-gray-900">Location</p>
                                     <p className="text-sm text-gray-600">Bangalore, KA</p>
@@ -275,9 +186,6 @@ export default function HomePage() {
                             </div>
 
                             <div className="flex flex-col items-center gap-3 p-6 rounded-2xl bg-white shadow-lg border border-primary/10 hover:shadow-xl transition-all">
-                                <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0">
-                                    <Clock className="w-6 h-6 text-white" />
-                                </div>
                                 <div className="text-center">
                                     <p className="font-semibold text-gray-900">Hours</p>
                                     <p className="text-sm text-gray-600">7 AM - 2 AM</p>
@@ -285,9 +193,6 @@ export default function HomePage() {
                             </div>
 
                             <div className="flex flex-col items-center gap-3 p-6 rounded-2xl bg-white shadow-lg border border-primary/10 hover:shadow-xl transition-all">
-                                <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0">
-                                    <Users className="w-6 h-6 text-white" />
-                                </div>
                                 <div className="text-center">
                                     <p className="font-semibold text-gray-900">Capacity</p>
                                     <p className="text-sm text-gray-600">22 Players</p>
@@ -327,36 +232,9 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Amenities */}
-            <section id="amenities" className="bg-white/40 backdrop-blur-sm py-20">
-                <div className="container mx-auto px-4">
-                    <div className="max-w-6xl mx-auto">
-                        <div className="text-center mb-12">
-                            <h3 className="text-4xl md:text-5xl font-bold mb-4">
-                                World-Class <span className="text-gradient">Amenities</span>
-                            </h3>
-                            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                                Everything you need for the perfect cricket experience
-                            </p>
-                        </div>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                            {amenities.map((amenity, index) => (
-                                <Card key={index} className="card-hover text-center border-0 bg-white shadow-lg hover:shadow-xl transition-all hover:scale-105">
-                                    <CardContent className="pt-8 pb-6">
-                                        <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl ${amenity.bg} flex items-center justify-center`}>
-                                            <amenity.icon className={`w-8 h-8 ${amenity.color}`} />
-                                        </div>
-                                        <p className="font-semibold text-gray-900">{amenity.label}</p>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             {/* Interactive Booking Calendar Section */}
-            <section className="container mx-auto px-4 py-20 bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-50">
+            <section id="availability" className="container mx-auto px-4 py-20 bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-50">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
                         <Badge className="mb-4 px-4 py-2 bg-primary text-white">
@@ -403,44 +281,6 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Testimonials */}
-            <section id="testimonials" className="container mx-auto px-4 py-20">
-                <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-12">
-                        <h3 className="text-4xl md:text-5xl font-bold mb-4">
-                            What <span className="text-gradient">Players Say</span>
-                        </h3>
-                        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                            Don't just take our word for it - hear from our happy customers
-                        </p>
-                    </div>
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {testimonials.map((testimonial, index) => (
-                            <Card key={index} className="card-hover border-0 bg-white shadow-lg hover:shadow-2xl transition-all hover:scale-105">
-                                <CardContent className="pt-8 pb-6">
-                                    <div className="flex gap-1 mb-4">
-                                        {[...Array(testimonial.rating)].map((_, j) => (
-                                            <Star key={j} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                                        ))}
-                                    </div>
-                                    <p className="text-gray-700 mb-6 leading-relaxed italic">
-                                        "{testimonial.text}"
-                                    </p>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-12 h-12 rounded-full gradient-primary flex items-center justify-center text-white font-bold text-lg">
-                                            {testimonial.avatar}
-                                        </div>
-                                        <div>
-                                            <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                                            <p className="text-sm text-gray-500">{testimonial.role}</p>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
 
             {/* Footer */}
@@ -461,10 +301,10 @@ export default function HomePage() {
                         <div>
                             <h4 className="font-semibold mb-4">Quick Links</h4>
                             <ul className="space-y-2 text-gray-400">
-                                <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
+                                <li><a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a></li>
+                                <li><a href="#about" className="hover:text-white transition-colors">About</a></li>
                                 <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
-                                <li><a href="#amenities" className="hover:text-white transition-colors">Amenities</a></li>
-                                <li><a href="#testimonials" className="hover:text-white transition-colors">Reviews</a></li>
+                                <li><a href="#availability" className="hover:text-white transition-colors">Availability</a></li>
                             </ul>
                         </div>
                         <div>
