@@ -16,7 +16,7 @@ export async function GET() {
         results.tests.env = {
             RESEND_API_KEY: process.env.RESEND_API_KEY ? 'SET' : 'MISSING',
             NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'MISSING',
-            DATABASE_URL: process.env.DATABASE_URL ? 'SET' : 'MISSING',
+            DATABASE_URL: process.env.DATABASE_URL ? `${process.env.DATABASE_URL.substring(0, 15)}...` : 'MISSING',
         };
     } catch (error: any) {
         results.tests.env = { error: error.message };
