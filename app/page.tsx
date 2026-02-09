@@ -289,7 +289,7 @@ export default function HomePage() {
                                 <span className="text-xl font-bold">CricketTurf</span>
                             </div>
                             <p className="text-gray-400">
-                                Bangalore's premier cricket turf booking platform
+                                Cricket turf booking platform
                             </p>
                         </div>
                         <div>
