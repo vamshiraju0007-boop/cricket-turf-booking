@@ -13,10 +13,18 @@ export async function GET() {
 
     // Test 1: Environment variables
     try {
+        const dbUrl = process.env.DATABASE_URL || '';
         results.tests.env = {
             RESEND_API_KEY: process.env.RESEND_API_KEY ? 'SET' : 'MISSING',
             NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'MISSING',
-            DATABASE_URL: process.env.DATABASE_URL ? `${process.env.DATABASE_URL.substring(0, 15)}...` : 'MISSING',
+            DATABASE_URL: dbUrl ? `${dbUrl.substring(0, 15)}...` : 'MISSING',
+            dbUrlDiagnostics: {
+                length: dbUrl.length,
+                hasLeadingWhitespace: dbUrl.startsWith(' '),
+                hasTrailingWhitespace: dbUrl.endsWith(' '),
+                hasQuotes: dbUrl.includes('"') || dbUrl.includes("'"),
+                protocol: dbUrl.split(':')[0],
+            }
         };
     } catch (error: any) {
         results.tests.env = { error: error.message };
