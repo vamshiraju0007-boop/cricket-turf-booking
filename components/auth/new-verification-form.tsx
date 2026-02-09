@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
