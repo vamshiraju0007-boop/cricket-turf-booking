@@ -49,7 +49,7 @@ export default function HomePage() {
                             Manage Bookings
                         </Button>
                         <Link href="/login">
-                            <Button variant="ghost" className="hover:bg-primary/10">login In</Button>
+                            <Button variant="outline" className="bg-gray-100 border-0 hover:bg-gray-200 text-gray-900">login In</Button>
                         </Link>
                         <Link href="/register">
                             <Button className="gradient-primary text-white border-0 hover:opacity-90">
@@ -79,7 +79,7 @@ export default function HomePage() {
                         {/* Badge */}
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-primary/20 shadow-lg hover:shadow-xl transition-all hover:scale-105">
                             <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-                            <span className="text-sm font-medium text-primary">Bangalore's #1 Cricket Turf</span>
+                            <span className="text-sm font-medium text-primary">Cricket turf booking platform</span>
                         </div>
 
                         {/* Main Heading */}
