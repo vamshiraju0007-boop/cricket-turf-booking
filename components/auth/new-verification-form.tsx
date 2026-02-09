@@ -4,12 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import Link from "next/link";
+import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
 export default function NewVerificationForm() {
     const [error, setError] = useState<string | undefined>();
     const [success, setSuccess] = useState<string | undefined>();
+    const [isRedirecting, setIsRedirecting] = useState(false);
     const searchParams = useSearchParams();
     const token = searchParams.get("token");
     const router = useRouter();
@@ -33,6 +34,23 @@ export default function NewVerificationForm() {
                     setError(data.error);
                 } else {
                     setSuccess(data.success);
+                    if (data.email) {
+                        setIsRedirecting(true);
+                        // Auto login after verification
+                        signIn("credentials", {
+                            email: data.email,
+                            isAutoLogin: "true",
+                            redirect: false,
+                        }).then((result) => {
+                            if (result?.error) {
+                                setError("Auto-login failed. Please sign in manually.");
+                                setIsRedirecting(false);
+                            } else {
+                                router.push("/venue");
+                                router.refresh();
+                            }
+                        });
+                    }
                 }
             })
             .catch(() => {
@@ -55,8 +73,16 @@ export default function NewVerificationForm() {
                     )}
 
                     {success && (
-                        <div className="p-3 bg-emerald-100 text-emerald-500 rounded-md w-full">
-                            {success}
+                        <div className="space-y-4 w-full">
+                            <div className="p-3 bg-emerald-100 text-emerald-500 rounded-md w-full">
+                                {success}
+                            </div>
+                            {isRedirecting && (
+                                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    Logging you in and redirecting...
+                                </div>
+                            )}
                         </div>
                     )}
 

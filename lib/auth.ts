@@ -10,10 +10,42 @@ export const authOptions: NextAuthOptions = {
             credentials: {
                 email: { label: 'Email', type: 'email' },
                 password: { label: 'Password', type: 'password' },
+                isAutoLogin: { label: 'isAutoLogin', type: 'hidden' },
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
-                    throw new Error('Email and password are required');
+                if (!credentials?.email) {
+                    throw new Error('Email is required');
+                }
+
+                // Handle Auto-Login after verification
+                if (credentials.isAutoLogin === "true") {
+                    const user = await prisma.user.findUnique({
+                        where: { email: credentials.email },
+                    });
+
+                    if (!user || !user.emailVerified) {
+                        throw new Error('Invalid auto-login attempt');
+                    }
+
+                    // Only allow auto-login if verified in the last 5 minutes
+                    const verifiedAt = new Date(user.emailVerified).getTime();
+                    const now = new Date().getTime();
+                    const diffMinutes = (now - verifiedAt) / (1000 * 60);
+
+                    if (diffMinutes > 5) {
+                        throw new Error('Auto-login window expired. Please sign in normally.');
+                    }
+
+                    return {
+                        id: user.id,
+                        email: user.email,
+                        name: user.name,
+                        role: user.role,
+                    };
+                }
+
+                if (!credentials?.password) {
+                    throw new Error('Password is required');
                 }
 
                 const user = await prisma.user.findUnique({

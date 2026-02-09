@@ -40,7 +40,10 @@ export async function POST(request: Request) {
             where: { id: existingToken.id }
         });
 
-        return NextResponse.json({ success: "Email verified!" });
+        return NextResponse.json({
+            success: "Email verified!",
+            email: existingToken.email
+        });
     } catch (error) {
         return NextResponse.json({ error: "Something went wrong!" }, { status: 500 });
     }
