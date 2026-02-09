@@ -251,26 +251,11 @@ export default function HomePage() {
 
             {/* Turf Details with Pricing */}
             <section id="pricing" className="container mx-auto px-4 py-20">
-                <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto items-center">
-                    {/* Image/Visual */}
-                    <div className="relative group order-2 md:order-1">
-                        <div className="absolute inset-0 gradient-primary rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
-                        <div className="relative bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-3xl h-96 flex items-center justify-center shadow-2xl overflow-hidden">
-                            <div className="text-white text-center p-8 z-10">
-                                <Trophy className="w-24 h-24 mx-auto mb-4 opacity-90 animate-pulse" />
-                                <p className="text-3xl font-bold mb-2">Premium Cricket Turf</p>
-                                <p className="text-lg opacity-90">Professional-grade playing surface</p>
-                            </div>
-                            {/* Decorative circles */}
-                            <div className="absolute top-10 right-10 w-32 h-32 rounded-full bg-white/10 blur-xl"></div>
-                            <div className="absolute bottom-10 left-10 w-40 h-40 rounded-full bg-white/10 blur-xl"></div>
-                        </div>
-                    </div>
-
+                <div className="max-w-3xl mx-auto space-y-12">
                     {/* Details */}
-                    <div className="space-y-6 order-1 md:order-2">
-                        <div>
-                            <h3 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+                    <div className="space-y-8 text-center">
+                        <div className="space-y-4">
+                            <h3 className="text-4xl md:text-5xl font-bold text-gray-900">
                                 About Our <span className="text-gradient">Turf</span>
                             </h3>
                             <p className="text-lg text-gray-600 leading-relaxed">
@@ -278,57 +263,63 @@ export default function HomePage() {
                             </p>
                         </div>
 
-                        <div className="space-y-4">
-                            <div className="flex items-start gap-4 p-4 rounded-xl bg-white/80 backdrop-blur-sm border border-primary/10 hover:shadow-lg transition-all">
-                                <div className="w-12 h-12 rounded-lg gradient-primary flex items-center justify-center flex-shrink-0">
+                        <div className="grid sm:grid-cols-3 gap-6">
+                            <div className="flex flex-col items-center gap-3 p-6 rounded-2xl bg-white shadow-lg border border-primary/10 hover:shadow-xl transition-all">
+                                <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0">
                                     <MapPin className="w-6 h-6 text-white" />
                                 </div>
-                                <div>
-                                    <p className="font-semibold text-gray-900 text-lg">Location</p>
-                                    <p className="text-gray-600">Bangalore, Karnataka, India</p>
+                                <div className="text-center">
+                                    <p className="font-semibold text-gray-900">Location</p>
+                                    <p className="text-sm text-gray-600">Bangalore, KA</p>
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-4 p-4 rounded-xl bg-white/80 backdrop-blur-sm border border-primary/10 hover:shadow-lg transition-all">
-                                <div className="w-12 h-12 rounded-lg gradient-primary flex items-center justify-center flex-shrink-0">
+                            <div className="flex flex-col items-center gap-3 p-6 rounded-2xl bg-white shadow-lg border border-primary/10 hover:shadow-xl transition-all">
+                                <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0">
                                     <Clock className="w-6 h-6 text-white" />
                                 </div>
-                                <div>
-                                    <p className="font-semibold text-gray-900 text-lg">Operating Hours</p>
-                                    <p className="text-gray-600">7:00 AM - 2:00 AM (Next Day)</p>
+                                <div className="text-center">
+                                    <p className="font-semibold text-gray-900">Hours</p>
+                                    <p className="text-sm text-gray-600">7 AM - 2 AM</p>
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-4 p-4 rounded-xl bg-white/80 backdrop-blur-sm border border-primary/10 hover:shadow-lg transition-all">
-                                <div className="w-12 h-12 rounded-lg gradient-primary flex items-center justify-center flex-shrink-0">
+                            <div className="flex flex-col items-center gap-3 p-6 rounded-2xl bg-white shadow-lg border border-primary/10 hover:shadow-xl transition-all">
+                                <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0">
                                     <Users className="w-6 h-6 text-white" />
                                 </div>
-                                <div>
-                                    <p className="font-semibold text-gray-900 text-lg">Capacity</p>
-                                    <p className="text-gray-600">22 players (Full team matches)</p>
+                                <div className="text-center">
+                                    <p className="font-semibold text-gray-900">Capacity</p>
+                                    <p className="text-sm text-gray-600">22 Players</p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Pricing Card */}
-                        <div className="p-6 rounded-2xl gradient-primary text-white shadow-xl">
-                            <h4 className="font-semibold text-2xl mb-4 flex items-center gap-2">
-                                <TrendingUp className="w-6 h-6" />
-                                Transparent Pricing
+                        <div className="p-8 rounded-3xl gradient-primary text-white shadow-2xl relative overflow-hidden group">
+                            {/* Decorative elements */}
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+                            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12 blur-xl"></div>
+
+                            <h4 className="font-bold text-3xl mb-6 flex items-center justify-center gap-2">
+                                <TrendingUp className="w-8 h-8" />
+                                Competitive Pricing
                             </h4>
-                            <div className="space-y-3">
-                                <div className="flex justify-between items-center p-3 bg-white/10 rounded-lg backdrop-blur-sm">
-                                    <span className="text-white/90">7:00 AM to 10:00 PM</span>
-                                    <span className="font-bold text-2xl">₹1,500<span className="text-sm font-normal">/hour</span></span>
+                            <div className="grid sm:grid-cols-2 gap-4">
+                                <div className="p-4 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20">
+                                    <p className="text-white/80 text-sm mb-1 uppercase tracking-wider">Day Slots</p>
+                                    <p className="text-white/70 text-xs mb-2">7:00 AM - 10:00 PM</p>
+                                    <p className="font-bold text-3xl">₹1,500<span className="text-base font-normal opacity-70">/hr</span></p>
                                 </div>
-                                <div className="flex justify-between items-center p-3 bg-white/10 rounded-lg backdrop-blur-sm">
-                                    <span className="text-white/90">10:00 PM to 2:00 AM</span>
-                                    <span className="font-bold text-2xl">₹1,600<span className="text-sm font-normal">/hour</span></span>
+                                <div className="p-4 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20">
+                                    <p className="text-white/80 text-sm mb-1 uppercase tracking-wider">Night Slots</p>
+                                    <p className="text-white/70 text-xs mb-2">10:00 PM - 2:00 AM</p>
+                                    <p className="font-bold text-3xl">₹1,600<span className="text-base font-normal opacity-70">/hr</span></p>
                                 </div>
                             </div>
-                            <Link href="/venue" className="block mt-4">
-                                <Button className="w-full bg-white text-primary hover:bg-gray-100 font-semibold py-3">
-                                    Book Now →
+                            <Link href="/venue" className="block mt-8">
+                                <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]">
+                                    Reserve Your Slot Now →
                                 </Button>
                             </Link>
                         </div>
