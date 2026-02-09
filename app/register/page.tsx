@@ -56,6 +56,8 @@ export default function RegisterPage() {
                     // Extract messages from Zod errors
                     const details = data.details.map((err: any) => err.message).join(", ");
                     errorMessage = `${errorMessage}: ${details}`;
+                } else if (data.message) {
+                    errorMessage = `${errorMessage}: ${data.message}`;
                 }
 
                 toast({

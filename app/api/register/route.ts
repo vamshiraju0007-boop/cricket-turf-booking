@@ -17,11 +17,15 @@ const registerSchema = z.object({
 });
 
 export async function POST(request: Request) {
+    let currentStep = 'init';
     try {
+        currentStep = 'parsing_json';
         const body = await request.json();
+
+        currentStep = 'validation';
         const validatedData = registerSchema.parse(body);
 
-        // Check if user already exists
+        currentStep = 'check_existing_user';
         const existingUser = await prisma.user.findUnique({
             where: { email: validatedData.email },
         });
@@ -33,10 +37,10 @@ export async function POST(request: Request) {
             );
         }
 
-        // Hash password
+        currentStep = 'hashing_password';
         const passwordHash = await bcrypt.hash(validatedData.password, 10);
 
-        // Create user
+        currentStep = 'create_user_db';
         const user = await prisma.user.create({
             data: {
                 name: validatedData.name,
@@ -53,17 +57,27 @@ export async function POST(request: Request) {
             },
         });
 
-        // Generate verification token
+        currentStep = 'generate_token';
         const verificationToken = await generateVerificationToken(validatedData.email);
 
-        // Send verification email
-        await sendVerificationEmail(verificationToken.email, verificationToken.token);
+        currentStep = 'sending_email';
+        const emailResult = await sendVerificationEmail(verificationToken.email, verificationToken.token);
+
+        if (emailResult.error) {
+            console.error('Email sending failed:', emailResult.error);
+        }
 
         return NextResponse.json(
-            { message: 'User created successfully. Please check your email to verify.', user },
+            {
+                message: 'User created successfully. Please check your email to verify.',
+                user,
+                emailSent: !emailResult.error
+            },
             { status: 201 }
         );
-    } catch (error) {
+    } catch (error: any) {
+        console.error(`Registration error at step [${currentStep}]:`, error);
+
         if (error instanceof z.ZodError) {
             return NextResponse.json(
                 { error: 'Validation failed', details: error.errors },
@@ -71,9 +85,13 @@ export async function POST(request: Request) {
             );
         }
 
-        console.error('Registration error:', error);
+        const errorMessage = error instanceof Error ? error.message : String(error);
         return NextResponse.json(
-            { error: 'Internal server error' },
+            {
+                error: 'Internal server error',
+                step: currentStep,
+                message: errorMessage
+            },
             { status: 500 }
         );
     }
