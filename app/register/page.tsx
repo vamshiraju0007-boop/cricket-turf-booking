@@ -56,8 +56,13 @@ export default function RegisterPage() {
                     // Extract messages from Zod errors
                     const details = data.details.map((err: any) => err.message).join(", ");
                     errorMessage = `${errorMessage}: ${details}`;
-                } else if (data.message) {
-                    errorMessage = `${errorMessage}: ${data.message}`;
+                } else {
+                    if (data.step) {
+                        errorMessage = `${errorMessage} at step [${data.step}]`;
+                    }
+                    if (data.message) {
+                        errorMessage = `${errorMessage}: ${data.message}`;
+                    }
                 }
 
                 toast({
@@ -73,10 +78,10 @@ export default function RegisterPage() {
                 description: "Account created successfully. Please sign in.",
             });
             router.push("/login");
-        } catch (error) {
+        } catch (error: any) {
             toast({
                 title: "Error",
-                description: "Something went wrong. Please try again.",
+                description: error?.message || "Something went wrong. Please try again.",
                 variant: "destructive",
             });
         } finally {
