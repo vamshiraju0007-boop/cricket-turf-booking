@@ -98,7 +98,7 @@ export default function HomePage() {
                         <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
                             <Trophy className="w-6 h-6 text-white" />
                         </div>
-                        <h1 className="text-2xl font-bold text-gradient">CricketTurf <span className="text-[10px] opacity-50 align-top">v1.1</span></h1>
+                        <h1 className="text-2xl font-bold text-gradient">CricketTurf <span className="text-[10px] opacity-50 align-top">v1.2 (Deployed)</span></h1>
                     </Link>
                     <nav className="hidden md:flex items-center gap-6">
                         <a href="#features" className="text-gray-700 hover:text-primary transition-colors">Features</a>
@@ -151,7 +151,7 @@ export default function HomePage() {
 
                         {/* Main Heading */}
                         <h2 className="text-5xl md:text-7xl font-bold text-gray-900 leading-tight">
-                            Book Your Perfect
+                            Book Your Elite
                             <span className="block text-gradient mt-2 animate-slide-up">Cricket Turf Slot</span>
                         </h2>
 
