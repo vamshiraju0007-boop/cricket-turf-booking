@@ -107,6 +107,7 @@ export default function VenuePage() {
     };
 
     const handleProceedToReview = () => {
+        console.log("handleProceedToReview called. Slots:", selectedSlots.length);
         if (selectedSlots.length === 0) {
             toast({
                 title: "No slots selected",
@@ -116,6 +117,7 @@ export default function VenuePage() {
             return;
         }
         setShowConfirmation(true);
+        console.log("Setting showConfirmation to true");
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
@@ -223,6 +225,8 @@ export default function VenuePage() {
     }
 
     const totalAmount = calculateTotalAmount(selectedSlots);
+
+    console.log("VenuePage Render: showConfirmation =", showConfirmation);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
