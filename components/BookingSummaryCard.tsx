@@ -107,7 +107,7 @@ export default function BookingSummaryCard({
                                 Processing...
                             </div>
                         ) : (
-                            "Proceed to Payment →"
+                            "Review Booking →"
                         )}
                     </Button>
                 </div>

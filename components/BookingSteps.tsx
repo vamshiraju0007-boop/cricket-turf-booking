@@ -9,7 +9,7 @@ interface BookingStepsProps {
 const steps = [
     { number: 1, label: "Select Date" },
     { number: 2, label: "Choose Time" },
-    { number: 3, label: "Confirm & Pay" },
+    { number: 3, label: "Review & Pay" },
 ];
 
 export default function BookingSteps({ currentStep }: BookingStepsProps) {
@@ -22,10 +22,10 @@ export default function BookingSteps({ currentStep }: BookingStepsProps) {
                         <div className="flex flex-col items-center relative">
                             <div
                                 className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-all ${currentStep > step.number
-                                        ? "bg-green-500 text-white"
-                                        : currentStep === step.number
-                                            ? "gradient-primary text-white ring-4 ring-primary/20"
-                                            : "bg-gray-200 text-gray-500"
+                                    ? "bg-green-500 text-white"
+                                    : currentStep === step.number
+                                        ? "gradient-primary text-white ring-4 ring-primary/20"
+                                        : "bg-gray-200 text-gray-500"
                                     }`}
                             >
                                 {currentStep > step.number ? (
@@ -36,8 +36,8 @@ export default function BookingSteps({ currentStep }: BookingStepsProps) {
                             </div>
                             <span
                                 className={`mt-2 text-sm font-medium ${currentStep >= step.number
-                                        ? "text-gray-900"
-                                        : "text-gray-500"
+                                    ? "text-gray-900"
+                                    : "text-gray-500"
                                     }`}
                             >
                                 {step.label}
@@ -49,8 +49,8 @@ export default function BookingSteps({ currentStep }: BookingStepsProps) {
                             <div className="flex-1 h-1 mx-4 relative top-[-20px]">
                                 <div
                                     className={`h-full rounded transition-all ${currentStep > step.number
-                                            ? "bg-green-500"
-                                            : "bg-gray-200"
+                                        ? "bg-green-500"
+                                        : "bg-gray-200"
                                         }`}
                                 />
                             </div>
