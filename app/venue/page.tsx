@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +31,7 @@ export const dynamic = 'force-dynamic';
 export default function VenuePage() {
     const session = useSession();
     const router = useRouter();
+    const searchParams = useSearchParams();
     const { toast } = useToast();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedSlots, setSelectedSlots] = useState<TimeSlot[]>([]);
@@ -38,6 +39,7 @@ export default function VenuePage() {
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingSlots, setIsLoadingSlots] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [pendingSlots, setPendingSlots] = useState<Array<{ date: string; time: string }> | null>(null);
 
     const status = session?.status || 'loading';
 
@@ -58,6 +60,59 @@ export default function VenuePage() {
         script.async = true;
         document.body.appendChild(script);
     }, []);
+
+    // Effect to parse URL slots on mount
+    useEffect(() => {
+        const slotsParam = searchParams.get("slots");
+        if (slotsParam) {
+            try {
+                const parsedSlots = JSON.parse(decodeURIComponent(slotsParam));
+                if (Array.isArray(parsedSlots) && parsedSlots.length > 0) {
+                    // Set date to the first slot's date
+                    const firstDate = new Date(parsedSlots[0].date);
+                    if (!isNaN(firstDate.getTime())) {
+                        setSelectedDate(firstDate);
+                        setPendingSlots(parsedSlots);
+                    }
+                }
+            } catch (e) {
+                console.error("Failed to parse slots param", e);
+            }
+        }
+    }, [searchParams]);
+
+    // Effect to apply pending slots once availableSlots are loaded
+    useEffect(() => {
+        if (pendingSlots && availableSlots.length > 0) {
+            const matchedSlots: TimeSlot[] = [];
+
+            pendingSlots.forEach(pSlot => {
+                // Normalize time format from "11:00am" to "11:00 AM" if needed
+                // WeekCalendar uses "11:00am"
+                // TimeSlot label uses "11:00 AM"
+                const normalizedTime = pSlot.time.toUpperCase().replace(/([AP]M)/, ' $1'); // "11:00am" -> "11:00AM" -> if format is "8:00am" -> "8:00 AM"?
+                // Actually WeekCalendar is "8:00am".
+                // Let's make a more robust match logic
+                const pTimeLower = pSlot.time.toLowerCase().replace(/\s/g, ''); // "11:00am"
+
+                const match = availableSlots.find(slot => {
+                    const slotLabelLower = slot.label.toLowerCase().replace(/\s/g, ''); // "11:00am"
+                    return slotLabelLower === pTimeLower && !slot.isBooked;
+                });
+
+                if (match) {
+                    matchedSlots.push(match);
+                }
+            });
+
+            if (matchedSlots.length > 0) {
+                setSelectedSlots(matchedSlots);
+                setShowConfirmation(true);
+            }
+            // Clear pending slots so we don't re-trigger
+            setPendingSlots(null);
+        }
+    }, [availableSlots, pendingSlots]);
 
     const loadSlots = async () => {
         setIsLoadingSlots(true);

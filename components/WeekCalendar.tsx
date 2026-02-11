@@ -256,12 +256,12 @@ export default function WeekCalendar({ onSlotSelect }: { onSlotSelect?: (date: D
                 <div className="mt-6 flex justify-end">
                     {selectedSlots.length > 0 ? (
                         <Link
-                            href={`/booking-confirmation?slots=${encodeURIComponent(JSON.stringify(selectedSlots))}`}
+                            href={`/venue?slots=${encodeURIComponent(JSON.stringify(selectedSlots))}`}
                             onClick={() => {
-                                // Save selected slots as booked
-                                const newBookedSlots = [...bookedSlots, ...selectedSlots];
-                                localStorage.setItem('bookedSlots', JSON.stringify(newBookedSlots));
-                                setBookedSlots(newBookedSlots);
+                                // Save selected slots as booked (Mock behavior - maybe remove this if integrating with real backend?)
+                                // actually, let's NOT save to localStorage as booked, because the booking hasn't happened yet.
+                                // The real booking happens in VenuePage via Razorpay.
+                                // So we remove the localStorage setBookedSlots logic here to avoid "fake" interactions.
                             }}
                         >
                             <Button
