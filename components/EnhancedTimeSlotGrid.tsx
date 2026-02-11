@@ -49,7 +49,14 @@ export default function EnhancedTimeSlotGrid({
         return (
             <button
                 key={slot.startTimeUtc.toISOString()}
-                onClick={() => !disabled && onSlotToggle(slot)}
+                onClick={() => {
+                    console.log("Slot clicked:", slot);
+                    if (!disabled) {
+                        onSlotToggle(slot);
+                    } else {
+                        console.log("Slot is disabled");
+                    }
+                }}
                 disabled={disabled}
                 className={`
                     relative p-4 rounded-xl border-2 transition-all duration-200 min-h-[100px]

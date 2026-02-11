@@ -87,7 +87,11 @@ export default function VenuePage() {
     };
 
     const toggleSlot = (slot: TimeSlot) => {
-        if (slot.isBooked) return;
+        console.log("toggleSlot called for:", slot);
+        if (slot.isBooked) {
+            console.log("Slot is booked, returning");
+            return;
+        }
 
         const isSelected = selectedSlots.some(
             (s) => s.startTimeUtc.getTime() === slot.startTimeUtc.getTime()
