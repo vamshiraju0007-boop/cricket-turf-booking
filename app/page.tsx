@@ -123,7 +123,7 @@ export default function HomePage() {
 
                         {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-                            <Link href="/venue">
+                            <Link href="#availability">
                                 <Button size="lg" className="text-lg px-12 py-7 gradient-primary text-white border-0 hover:opacity-90 shadow-xl hover:shadow-2xl transition-all hover:scale-105">
                                     Book Now →
                                 </Button>
@@ -233,7 +233,7 @@ export default function HomePage() {
                                     <p className="font-bold text-3xl">₹1,600<span className="text-base font-normal opacity-70">/hr</span></p>
                                 </div>
                             </div>
-                            <Link href="/venue" className="block mt-8">
+                            <Link href="#availability" className="block mt-8">
                                 <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]">
                                     Reserve Your Slot Now →
                                 </Button>
