@@ -48,6 +48,7 @@ export async function POST(request: Request) {
                 phone: validatedData.phone,
                 passwordHash,
                 role: 'USER',
+                emailVerified: new Date(), // Auto-verify immediately
             },
             select: {
                 id: true,
@@ -57,21 +58,18 @@ export async function POST(request: Request) {
             },
         });
 
-        currentStep = 'generate_token';
-        const verificationToken = await generateVerificationToken(validatedData.email);
+        // Skip token generation and email sending for auto-verification
+        // currentStep = 'generate_token';
+        // const verificationToken = await generateVerificationToken(validatedData.email);
 
-        currentStep = 'sending_email';
-        const emailResult = await sendVerificationEmail(verificationToken.email, verificationToken.token);
-
-        if (emailResult.error) {
-            console.error('Email sending failed:', emailResult.error);
-        }
+        // currentStep = 'sending_email';
+        // const emailResult = await sendVerificationEmail(verificationToken.email, verificationToken.token);
 
         return NextResponse.json(
             {
-                message: 'User created successfully. Please check your email to verify.',
+                message: 'Account created successfully. You can now log in.',
                 user,
-                emailSent: !emailResult.error
+                emailSent: false // No email needed
             },
             { status: 201 }
         );
