@@ -168,7 +168,7 @@ export default function RegisterPage() {
                                 <Input
                                     id="password"
                                     type="password"
-                                    placeholder="••••••••"
+                                    placeholder=""
                                     value={formData.password}
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                     required
@@ -180,7 +180,7 @@ export default function RegisterPage() {
                                 <Input
                                     id="confirmPassword"
                                     type="password"
-                                    placeholder="••••••••"
+                                    placeholder=""
                                     value={formData.confirmPassword}
                                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                                     required
