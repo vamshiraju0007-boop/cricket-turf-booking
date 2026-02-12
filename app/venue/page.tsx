@@ -39,6 +39,7 @@ export default function VenuePage() {
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingSlots, setIsLoadingSlots] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [isVerifyingSlots, setIsVerifyingSlots] = useState(() => !!searchParams.get("slots"));
     const [pendingSlots, setPendingSlots] = useState<Array<{ date: string; time: string }> | null>(null);
 
     const status = session?.status || 'loading';
@@ -69,15 +70,25 @@ export default function VenuePage() {
     useEffect(() => {
         const hydrateSlots = async () => {
             const slotsParam = searchParams.get("slots");
-            if (!slotsParam) return;
+            if (!slotsParam) {
+                setIsVerifyingSlots(false);
+                return;
+            }
+
+            // Ensure loading state is true when we have slots to process
+            setIsVerifyingSlots(true);
 
             try {
                 const parsedSlots = JSON.parse(decodeURIComponent(slotsParam));
 
-                if (!Array.isArray(parsedSlots) || parsedSlots.length === 0) return;
+                if (!Array.isArray(parsedSlots) || parsedSlots.length === 0) {
+                    setIsVerifyingSlots(false);
+                    return;
+                }
 
                 console.log("VenuePage: Hydrating slots:", parsedSlots);
-                toast({ title: "Loading Booking...", description: "Verifying slot availability..." });
+                // Optional: Toast can be removed if the full screen loader is sufficient
+                // toast({ title: "Loading Booking...", description: "Verifying slot availability..." });
 
                 // Group slots by date
                 const slotsByDate: Record<string, typeof parsedSlots> = {};
@@ -153,16 +164,10 @@ export default function VenuePage() {
                     });
                 }
 
-                // Clean up URL to avoid re-hydrating on refresh/nav (User previously requested this, but we reverted. 
-                // Since this is a new robust hydration, we can leave it dirty for now or clean it. 
-                // Leaving it dirty is safer for refresh state, but cleaner is nicer. 
-                // Let's stick to user request from Step 68 and NOT clean it yet to ensure stability, 
-                // or if we do, we need to ensure the state persists. 
-                // With this hydration logic, if we clean the URL, refresh will lose state unless we persist elsewhere.
-                // So, keep URL dirty for safety as per "Reverting URL Cleanup" instruction.)
-
             } catch (e) {
                 console.error("Failed to hydrate slots", e);
+            } finally {
+                setIsVerifyingSlots(false);
             }
         };
 
@@ -338,8 +343,13 @@ export default function VenuePage() {
         }
     };
 
-    if (status === "loading") {
-        return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    if (status === "loading" || isVerifyingSlots) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+                <p className="text-gray-600 font-medium">Verifying slot availability...</p>
+            </div>
+        );
     }
 
     const totalAmount = calculateTotalAmount(selectedSlots);
