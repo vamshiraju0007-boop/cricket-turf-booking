@@ -320,8 +320,8 @@ export default function HomePage() {
                         <div>
                             <h4 className="font-semibold mb-4">Contact</h4>
                             <ul className="space-y-2 text-gray-400">
-                                <li>Bangalore, Karnataka</li>
-                                <li>India</li>
+                                <li>Vamshi Raju M</li>
+                                <li>Bangalore, INDIA</li>
                                 <li>support@cricketturf.com</li>
                             </ul>
                         </div>
