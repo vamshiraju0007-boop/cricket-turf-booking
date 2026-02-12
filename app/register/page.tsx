@@ -132,7 +132,7 @@ export default function RegisterPage() {
                                 <Label htmlFor="name" className="text-sm font-semibold">Full Name</Label>
                                 <Input
                                     id="name"
-                                    placeholder="John Doe"
+                                    placeholder="Enter Your Full Name"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                     required
@@ -144,7 +144,7 @@ export default function RegisterPage() {
                                 <Input
                                     id="email"
                                     type="email"
-                                    placeholder="you@example.com"
+                                    placeholder="Enter Your Email"
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                     required
@@ -168,7 +168,7 @@ export default function RegisterPage() {
                                 <Input
                                     id="password"
                                     type="password"
-                                    placeholder=""
+                                    placeholder="Enter Your Password"
                                     value={formData.password}
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                     required
@@ -180,7 +180,7 @@ export default function RegisterPage() {
                                 <Input
                                     id="confirmPassword"
                                     type="password"
-                                    placeholder=""
+                                    placeholder="Enter Your Password"
                                     value={formData.confirmPassword}
                                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                                     required

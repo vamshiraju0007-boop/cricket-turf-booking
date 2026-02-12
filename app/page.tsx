@@ -44,14 +44,7 @@ export default function HomePage() {
                         <h1 className="text-2xl font-bold text-gradient">CricketTurf</h1>
                     </Link>
                     <div className="flex items-center gap-2">
-                        <Button
-                            variant="outline"
-                            className="border-primary/30 hover:bg-primary/5 hover:border-primary hidden sm:flex"
-                            onClick={() => setIsManageBookingsOpen(true)}
-                        >
-                            <CalendarDays className="w-4 h-4 mr-2" />
-                            Manage Bookings
-                        </Button>
+                        {/* Manage Bookings button removed as per user request */}
                         {session ? (
                             <>
                                 <Button
