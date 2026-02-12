@@ -51,6 +51,7 @@ export default function BookingConfirmationView({
                 </CardHeader>
                 <CardContent className="space-y-8">
                     {/* Two Column Layout */}
+                    {/* Two Column Layout */}
                     <div className="grid md:grid-cols-2 gap-8">
                         {/* Left Column: Booking Details */}
                         <div className="space-y-6">
@@ -58,24 +59,39 @@ export default function BookingConfirmationView({
                                 <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
                                     Date & Time
                                 </h3>
-                                <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center border border-slate-100">
-                                            <Calendar className="w-5 h-5 text-primary" />
-                                        </div>
-                                        <div>
-                                            <p className="font-semibold text-gray-900">{formatDate(selectedDate)}</p>
-                                            <p className="text-sm text-gray-500">Selected Date</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap gap-2 pt-2">
-                                        {selectedSlots.map((slot, index) => (
-                                            <Badge key={index} variant="secondary" className="bg-white border border-slate-200 text-slate-700 py-1 px-2">
-                                                <Clock className="w-3 h-3 mr-1 text-primary" />
-                                                {formatTime(slot.startTimeUtc)}
-                                            </Badge>
-                                        ))}
-                                    </div>
+                                <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-4">
+                                    {(() => {
+                                        // Group slots by date string
+                                        const slotsByDate: Record<string, TimeSlot[]> = {};
+                                        selectedSlots.forEach(slot => {
+                                            const dateStr = formatDate(slot.startTimeUtc);
+                                            if (!slotsByDate[dateStr]) {
+                                                slotsByDate[dateStr] = [];
+                                            }
+                                            slotsByDate[dateStr].push(slot);
+                                        });
+
+                                        return Object.entries(slotsByDate).map(([dateStr, slots], dateIndex) => (
+                                            <div key={dateStr} className={`space-y-2 ${dateIndex > 0 ? 'pt-2 border-t border-slate-200' : ''}`}>
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center border border-slate-100">
+                                                        <Calendar className="w-4 h-4 text-primary" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-semibold text-gray-900">{dateStr}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-wrap gap-2 pl-11">
+                                                    {slots.map((slot, index) => (
+                                                        <Badge key={index} variant="secondary" className="bg-white border border-slate-200 text-slate-700 py-1 px-2">
+                                                            <Clock className="w-3 h-3 mr-1 text-primary" />
+                                                            {formatTime(slot.startTimeUtc)}
+                                                        </Badge>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ));
+                                    })()}
                                 </div>
                             </div>
 
@@ -202,6 +218,6 @@ export default function BookingConfirmationView({
                     </div>
                 </CardContent>
             </Card>
-        </div>
+        </div >
     );
 }

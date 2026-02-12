@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,9 +11,12 @@ import {
 } from "lucide-react";
 import WeekCalendar from "@/components/WeekCalendar";
 import ManageBookingsModal from "@/components/ManageBookingsModal";
+import { useRouter } from "next/navigation"; // Import useRouter
 
 export default function HomePage() {
+    const { data: session } = useSession();
     const [isManageBookingsOpen, setIsManageBookingsOpen] = useState(false);
+    const router = useRouter(); // Initialize useRouter
 
     const bookingSteps = [
         { icon: Calendar, title: "Choose Date & Time", desc: "Select your preferred slot from our calendar" },
@@ -48,14 +52,34 @@ export default function HomePage() {
                             <CalendarDays className="w-4 h-4 mr-2" />
                             Manage Bookings
                         </Button>
-                        <Link href="/login">
-                            <Button variant="outline" className="bg-gray-100 border-0 hover:bg-gray-200 text-gray-900">login In</Button>
-                        </Link>
-                        <Link href="/register">
-                            <Button className="gradient-primary text-white border-0 hover:opacity-90">
-                                Sign In
-                            </Button>
-                        </Link>
+                        {session ? (
+                            <>
+                                <Button
+                                    onClick={() => router.push("/dashboard")}
+                                    className="gradient-primary text-white border-0 hover:opacity-90"
+                                >
+                                    My Bookings
+                                </Button>
+                                <Button
+                                    onClick={() => signOut({ callbackUrl: "/" })}
+                                    variant="ghost"
+                                    className="text-red-600 hover:bg-red-50 hover:text-red-700"
+                                >
+                                    Sign Out
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Link href="/login">
+                                    <Button variant="outline" className="bg-gray-100 border-0 hover:bg-gray-200 text-gray-900">Sign In</Button>
+                                </Link>
+                                <Link href="/register">
+                                    <Button className="gradient-primary text-white border-0 hover:opacity-90">
+                                        Sign Up
+                                    </Button>
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </header>

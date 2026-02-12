@@ -54,7 +54,12 @@ export default function BookingSummaryCard({
                     <Calendar className="w-5 h-5 text-primary mt-0.5" />
                     <div>
                         <p className="text-sm font-medium text-gray-600">Date</p>
-                        <p className="font-semibold text-gray-900">{formatDate(selectedDate)}</p>
+                        <p className="font-semibold text-gray-900">
+                            {(() => {
+                                const dates = new Set(selectedSlots.map(s => formatDate(s.startTimeUtc)));
+                                return dates.size > 1 ? "Multiple Dates Selected" : formatDate(selectedDate);
+                            })()}
+                        </p>
                     </div>
                 </div>
 
@@ -74,9 +79,17 @@ export default function BookingSummaryCard({
                             >
                                 <div className="flex items-center gap-2">
                                     <Clock className="w-4 h-4 text-primary" />
-                                    <span className="text-sm font-medium text-gray-900">
-                                        {formatTime(slot.startTimeUtc)}
-                                    </span>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-medium text-gray-900">
+                                            {formatTime(slot.startTimeUtc)}
+                                        </span>
+                                        {/* Show date if multiple dates are selected */}
+                                        {new Set(selectedSlots.map(s => formatDate(s.startTimeUtc))).size > 1 && (
+                                            <span className="text-[10px] text-gray-500">
+                                                {formatDate(slot.startTimeUtc, 'MMM DD')}
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                                 <span className="text-sm font-semibold text-gray-700">
                                     {formatPrice(slot.pricePerHour)}

@@ -6,11 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function WeekCalendar({ onSlotSelect }: { onSlotSelect?: (date: Date, time: string) => void }) {
     const [selectedSlots, setSelectedSlots] = useState<Array<{ date: string; time: string }>>([]);
     const [bookedSlots, setBookedSlots] = useState<Array<{ date: string; time: string }>>([]);
     const [weekOffset, setWeekOffset] = useState(0);
+    const { data: session } = useSession();
+    const router = useRouter();
 
     // Load booked slots from localStorage on mount
     useEffect(() => {
@@ -53,8 +57,15 @@ export default function WeekCalendar({ onSlotSelect }: { onSlotSelect?: (date: D
     const goToNextWeek = () => setWeekOffset(weekOffset + 1);
     const goToToday = () => setWeekOffset(0);
 
+    const getLocalDateStr = (date: Date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
     const isSlotBooked = (day: Date, time: string) => {
-        const dateStr = day.toISOString().split('T')[0];
+        const dateStr = getLocalDateStr(day);
         return bookedSlots.some(slot => slot.date === dateStr && slot.time === time);
     };
 
@@ -65,7 +76,7 @@ export default function WeekCalendar({ onSlotSelect }: { onSlotSelect?: (date: D
             return;
         }
 
-        const dateStr = day.toISOString().split('T')[0];
+        const dateStr = getLocalDateStr(day);
         const slotKey = `${dateStr}-${time}`;
 
         // Check if slot is already selected
@@ -84,7 +95,7 @@ export default function WeekCalendar({ onSlotSelect }: { onSlotSelect?: (date: D
     };
 
     const isSlotSelected = (day: Date, time: string) => {
-        const dateStr = day.toISOString().split('T')[0];
+        const dateStr = getLocalDateStr(day);
         return selectedSlots.some(slot => slot.date === dateStr && slot.time === time);
     };
 
@@ -255,22 +266,20 @@ export default function WeekCalendar({ onSlotSelect }: { onSlotSelect?: (date: D
                 {/* Next Button */}
                 <div className="mt-6 flex justify-end">
                     {selectedSlots.length > 0 ? (
-                        <Link
-                            href={`/venue?slots=${encodeURIComponent(JSON.stringify(selectedSlots))}`}
+                        <Button
+                            size="lg"
+                            className="gradient-primary text-white border-0 hover:opacity-90 px-12"
                             onClick={() => {
-                                // Save selected slots as booked (Mock behavior - maybe remove this if integrating with real backend?)
-                                // actually, let's NOT save to localStorage as booked, because the booking hasn't happened yet.
-                                // The real booking happens in VenuePage via Razorpay.
-                                // So we remove the localStorage setBookedSlots logic here to avoid "fake" interactions.
+                                const targetUrl = `/venue?slots=${encodeURIComponent(JSON.stringify(selectedSlots))}`;
+                                if (session) {
+                                    router.push(targetUrl);
+                                } else {
+                                    router.push(`/login?callbackUrl=${encodeURIComponent(targetUrl)}`);
+                                }
                             }}
                         >
-                            <Button
-                                size="lg"
-                                className="gradient-primary text-white border-0 hover:opacity-90 px-12"
-                            >
-                                NEXT ({selectedSlots.length} slot{selectedSlots.length > 1 ? 's' : ''})
-                            </Button>
-                        </Link>
+                            NEXT ({selectedSlots.length} slot{selectedSlots.length > 1 ? 's' : ''})
+                        </Button>
                     ) : (
                         <Button
                             size="lg"

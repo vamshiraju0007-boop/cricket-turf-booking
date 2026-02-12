@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -59,60 +59,118 @@ export default function VenuePage() {
         script.src = "https://checkout.razorpay.com/v1/checkout.js";
         script.async = true;
         document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        };
     }, []);
 
-    // Effect to parse URL slots on mount
+    // Effect to parse URL slots on mount and hydrate them
     useEffect(() => {
-        const slotsParam = searchParams.get("slots");
-        if (slotsParam) {
+        const hydrateSlots = async () => {
+            const slotsParam = searchParams.get("slots");
+            if (!slotsParam) return;
+
             try {
                 const parsedSlots = JSON.parse(decodeURIComponent(slotsParam));
-                if (Array.isArray(parsedSlots) && parsedSlots.length > 0) {
-                    // Set date to the first slot's date
-                    const firstDate = new Date(parsedSlots[0].date);
-                    if (!isNaN(firstDate.getTime())) {
-                        setSelectedDate(firstDate);
-                        setPendingSlots(parsedSlots);
+
+                if (!Array.isArray(parsedSlots) || parsedSlots.length === 0) return;
+
+                console.log("VenuePage: Hydrating slots:", parsedSlots);
+                toast({ title: "Loading Booking...", description: "Verifying slot availability..." });
+
+                // Group slots by date
+                const slotsByDate: Record<string, typeof parsedSlots> = {};
+                parsedSlots.forEach(slot => {
+                    if (!slotsByDate[slot.date]) {
+                        slotsByDate[slot.date] = [];
                     }
-                }
-            } catch (e) {
-                console.error("Failed to parse slots param", e);
-            }
-        }
-    }, [searchParams]);
-
-    // Effect to apply pending slots once availableSlots are loaded
-    useEffect(() => {
-        if (pendingSlots && availableSlots.length > 0) {
-            const matchedSlots: TimeSlot[] = [];
-
-            pendingSlots.forEach(pSlot => {
-                // Normalize time format from "11:00am" to "11:00 AM" if needed
-                // WeekCalendar uses "11:00am"
-                // TimeSlot label uses "11:00 AM"
-                const normalizedTime = pSlot.time.toUpperCase().replace(/([AP]M)/, ' $1'); // "11:00am" -> "11:00AM" -> if format is "8:00am" -> "8:00 AM"?
-                // Actually WeekCalendar is "8:00am".
-                // Let's make a more robust match logic
-                const pTimeLower = pSlot.time.toLowerCase().replace(/\s/g, ''); // "11:00am"
-
-                const match = availableSlots.find(slot => {
-                    const slotLabelLower = slot.label.toLowerCase().replace(/\s/g, ''); // "11:00am"
-                    return slotLabelLower === pTimeLower && !slot.isBooked;
+                    slotsByDate[slot.date].push(slot);
                 });
 
-                if (match) {
-                    matchedSlots.push(match);
-                }
-            });
+                const finalHydratedSlots: TimeSlot[] = [];
+                const distinctDates = Object.keys(slotsByDate);
 
-            if (matchedSlots.length > 0) {
-                setSelectedSlots(matchedSlots);
-                setShowConfirmation(true);
+                // Fetch availability for each date in parallel
+                await Promise.all(distinctDates.map(async (dateStr) => {
+                    const dateObj = new Date(dateStr);
+                    if (isNaN(dateObj.getTime())) return;
+
+                    try {
+                        const response = await fetch(`/api/slots?date=${dateObj.toISOString()}`);
+                        const data = await response.json();
+
+                        const bookedSlots = data.bookings.map((b: any) => ({
+                            startTimeUtc: new Date(b.startTimeUtc),
+                            endTimeUtc: new Date(b.endTimeUtc),
+                        }));
+
+                        // Generate all slots for this date to check availability and get full TimeSlot object
+                        const allSlotsForDate = generateTimeSlots(dateObj, bookedSlots);
+
+                        // Match requested slots against generated valid slots
+                        const requestedSlotsForDate = slotsByDate[dateStr];
+
+                        requestedSlotsForDate.forEach(reqSlot => {
+                            const normalizedTime = reqSlot.time.toUpperCase().replace(/([AP]M)/, ' $1');
+                            const reqTimeLower = reqSlot.time.toLowerCase().replace(/\s/g, '');
+
+                            const match = allSlotsForDate.find(s => {
+                                const slotLabelLower = s.label.toLowerCase().replace(/\s/g, '');
+                                return slotLabelLower === reqTimeLower && !s.isBooked;
+                            });
+
+                            if (match) {
+                                finalHydratedSlots.push(match);
+                            } else {
+                                console.warn(`Slot verification failed for ${dateStr} ${reqSlot.time} - might be booked or invalid.`);
+                            }
+                        });
+
+                    } catch (err) {
+                        console.error(`Error fetching slots for hydration for date ${dateStr}:`, err);
+                    }
+                }));
+
+                // Update state
+                if (finalHydratedSlots.length > 0) {
+                    console.log("VenuePage: Hydration complete. Matching slots:", finalHydratedSlots);
+
+                    // Sort by time
+                    finalHydratedSlots.sort((a, b) => a.startTimeUtc.getTime() - b.startTimeUtc.getTime());
+
+                    setSelectedSlots(finalHydratedSlots);
+                    setShowConfirmation(true);
+
+                    // Set calendar view to the first date
+                    const firstDate = finalHydratedSlots[0].startTimeUtc;
+                    setSelectedDate(firstDate);
+                } else {
+                    toast({
+                        title: "Availability Changed",
+                        description: "Some selected slots are no longer available.",
+                        variant: "destructive"
+                    });
+                }
+
+                // Clean up URL to avoid re-hydrating on refresh/nav (User previously requested this, but we reverted. 
+                // Since this is a new robust hydration, we can leave it dirty for now or clean it. 
+                // Leaving it dirty is safer for refresh state, but cleaner is nicer. 
+                // Let's stick to user request from Step 68 and NOT clean it yet to ensure stability, 
+                // or if we do, we need to ensure the state persists. 
+                // With this hydration logic, if we clean the URL, refresh will lose state unless we persist elsewhere.
+                // So, keep URL dirty for safety as per "Reverting URL Cleanup" instruction.)
+
+            } catch (e) {
+                console.error("Failed to hydrate slots", e);
             }
-            // Clear pending slots so we don't re-trigger
-            setPendingSlots(null);
-        }
-    }, [availableSlots, pendingSlots]);
+        };
+
+        hydrateSlots();
+    }, [searchParams]);
+
+    // Cleanup: Removed the old useEffect that depended on 'availableSlots' and 'pendingSlots'
+    // as it supported only single-date hydration and was race-condition prone.
 
     const loadSlots = async () => {
         setIsLoadingSlots(true);
@@ -129,7 +187,8 @@ export default function VenuePage() {
 
             const slots = generateTimeSlots(selectedDate, bookedSlots);
             setAvailableSlots(slots);
-            setSelectedSlots([]);
+            // Don't clear selected slots when loading new date, to allow multi-date selection
+            // setSelectedSlots([]); 
         } catch (error) {
             toast({
                 title: "Error",
@@ -305,6 +364,13 @@ export default function VenuePage() {
                         </Button>
                         <Button onClick={() => router.push("/dashboard")} className="gradient-primary text-white border-0 hover:opacity-90">
                             My Bookings
+                        </Button>
+                        <Button
+                            onClick={() => signOut({ callbackUrl: "/" })}
+                            variant="ghost"
+                            className="text-red-600 hover:bg-red-50 hover:text-red-700"
+                        >
+                            Sign Out
                         </Button>
                     </div>
                 </div>
