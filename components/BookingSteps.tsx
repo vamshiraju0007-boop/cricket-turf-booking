@@ -7,9 +7,8 @@ interface BookingStepsProps {
 }
 
 const steps = [
-    { number: 1, label: "Select Date" },
-    { number: 2, label: "Choose Time" },
-    { number: 3, label: "Review & Pay" },
+    { number: 1, label: "Select Date & Time" },
+    { number: 2, label: "Review & Pay" },
 ];
 
 export default function BookingSteps({ currentStep }: BookingStepsProps) {

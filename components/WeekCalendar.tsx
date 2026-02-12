@@ -17,15 +17,12 @@ export default function WeekCalendar({ onSlotSelect }: { onSlotSelect?: (date: D
     const router = useRouter();
 
     // Load booked slots from localStorage on mount
+    // Load booked slots from localStorage on mount - REMOVED to prevent confusing persistent state
+    // Real booking status should come from the backend API
     useEffect(() => {
-        const stored = localStorage.getItem('bookedSlots');
-        if (stored) {
-            try {
-                setBookedSlots(JSON.parse(stored));
-            } catch (error) {
-                console.error('Error loading booked slots:', error);
-            }
-        }
+        // Clearing any legacy local storage for booked slots to fix user issue
+        localStorage.removeItem('bookedSlots');
+        setBookedSlots([]);
     }, []);
 
     // Get current date

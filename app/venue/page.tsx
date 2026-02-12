@@ -378,7 +378,7 @@ export default function VenuePage() {
 
             <div className="container mx-auto px-4 py-8 max-w-6xl">
                 {/* Booking Progress Steps */}
-                <BookingSteps currentStep={showConfirmation ? 3 : (selectedSlots.length > 0 ? 2 : 1)} />
+                <BookingSteps currentStep={showConfirmation ? 2 : 1} />
 
                 {showConfirmation ? (
                     <BookingConfirmationView
